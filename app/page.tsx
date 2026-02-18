@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Header from './components/header';
+import Image from 'next/image';
 
 export default function Page() {
   const [introVisible, setIntroVisible] = useState(true);
@@ -9,17 +10,33 @@ export default function Page() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIntroVisible(false);
-    }, 2000);
+    }, 2600);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
       {introVisible && (
-        <div className="fixed inset-0 bg-black z-[100] flex items-center justify-center intro-overlay-animate">
-          <h1 className="text-5xl md:text-7xl font-bold text-white intro-text-animate">
-            Unstable Cat Games
-          </h1>
+        <div className="fixed inset-0 bg-black z-[100] flex items-center justify-center p-8 intro-overlay-animate">
+          <div className="relative w-full max-w-xl h-64 flex items-center justify-between intro-content-animate">
+            <Image
+              src="/Assets/cat.png"
+              alt="Unstable Cat"
+              width={500}
+              height={500}
+              className="h-64 w-64 object-contain relative z-10"
+            />
+
+            <div className="bouncing-ball"></div>
+
+            <Image
+              src="/logos/logo.png"
+              alt="Unstable Cat Games Logo"
+              width={240}
+              height={240}
+              className="h-32 w-auto object-contain brightness-0 invert relative z-10"
+            />
+          </div>
         </div>
       )}
 
