@@ -4,6 +4,12 @@ import { CONFIG } from './utils/config';
 import Image from 'next/image';
 import React from 'react';
 import CacheCloudinary from './components/cachecloudinary';
+import Bundle from './components/bundle';
+
+interface CloudinaryResource {
+  secure_url: string;
+  [key: string]: any;
+}
 
 async function getFirstVideoInFolder(folder: string) {
   cloudinary.config({
@@ -19,7 +25,7 @@ async function getFirstVideoInFolder(folder: string) {
       .max_results(1)
       .execute();
 
-    const resources = result.resources || [];
+    const resources: CloudinaryResource[] = result.resources || [];
     if (resources.length === 0) {
       return null;
     }
@@ -30,8 +36,32 @@ async function getFirstVideoInFolder(folder: string) {
   }
 }
 
+async function getImagesFromFolder(folder: string): Promise<string[]> {
+  cloudinary.config({
+    cloud_name: CONFIG.CLOUDINARY_CLOUD_NAME,
+    api_key: CONFIG.CLOUDINARY_API_KEY,
+    api_secret: CONFIG.CLOUDINARY_API_SECRET,
+  });
+
+  try {
+    const result = await cloudinary.search
+      .expression(`resource_type:image AND folder="${folder}"`)
+      .sort_by('created_at', 'desc')
+      .execute();
+
+    const resources: CloudinaryResource[] = result.resources || [];
+    console.log(`Found ${resources.length} images in folder: ${folder}`);
+    return resources.map((resource: CloudinaryResource) => resource.secure_url);
+  } catch (error) {
+    console.error(`Error fetching images from folder ${folder}:`, error);
+    return [];
+  }
+}
+
 export default async function Page() {
   const videoSrc = await getFirstVideoInFolder('Video Placeholder');
+  const bundleFolders = ['Bundle/Spin Tycoon', 'Bundle/Feed', 'Bundle/Elasticity', 'Bundle/Rocket Fuel', 'Bundle/Link'];
+  const bundleImages = await Promise.all(bundleFolders.map(getImagesFromFolder));
 
   return (
     <>
@@ -77,12 +107,7 @@ export default async function Page() {
           </div>
         </section>
 
-        <section
-          data-theme="light"
-          className="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center text-4xl font-bold p-8"
-        >
-          <div>Light Theme Section</div>
-        </section>
+        <Bundle bundleImages={bundleImages} />
 
         <section
           data-theme="dark"
