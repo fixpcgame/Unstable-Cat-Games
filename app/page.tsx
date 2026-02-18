@@ -3,6 +3,7 @@ import Header from './components/header';
 import { CONFIG } from './utils/config';
 import Image from 'next/image';
 import React from 'react';
+import CacheCloudinary from './components/cachecloudinary';
 
 async function getFirstVideoInFolder(folder: string) {
   cloudinary.config({
@@ -23,10 +24,7 @@ async function getFirstVideoInFolder(folder: string) {
       return null;
     }
 
-    let videoUrl = resources[0].secure_url;
-    videoUrl = videoUrl.replace('/upload/', '/upload/q_auto:good,f_mp4,vc_h264,c_scale,w_1920/');
-
-    return videoUrl;
+    return resources[0].secure_url;
   } catch (error) {
     return null;
   }
@@ -67,14 +65,10 @@ export default async function Page() {
         <section data-theme="dark" className="relative h-screen w-full">
           <div className="absolute inset-0 z-0">
             {videoSrc ? (
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
+              <CacheCloudinary
+                assetUrl={videoSrc}
+                type="video"
                 className="w-full h-full object-cover"
-                src={videoSrc}
               />
             ) : (
               <div className="w-full h-full bg-black" />
