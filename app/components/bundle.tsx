@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import BundleGallery from './bundlegallery';
 
@@ -12,6 +12,8 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   const [animatingIndices, setAnimatingIndices] = useState<number[]>([]);
   const [activeMole, setActiveMole] = useState<number | null>(null);
   const [isTilted, setIsTilted] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const galleryData = [
     { folder: 'Rocket Fuel', images: bundleImages[3] },
@@ -22,18 +24,25 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   ];
 
   useEffect(() => {
-    if (activeGalleryIndex !== null) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
     
-    const timer = setTimeout(() => {
-      const nextIndex = Math.floor(Math.random() * galleryData.length);
-      setActiveGalleryIndex(nextIndex);
-      setAnimatingIndices(prev => Array.from(new Set([...prev, nextIndex])));
-    }, 1200);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
     
-    return () => clearTimeout(timer);
-  }, [activeGalleryIndex, galleryData.length]);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!isInView) return;
+
     let timeoutId: NodeJS.Timeout;
 
     const triggerTease = () => {
@@ -49,10 +58,22 @@ const Bundle = ({ bundleImages }: BundleProps) => {
       timeoutId = setTimeout(triggerTease, nextTime);
     };
 
-    timeoutId = setTimeout(triggerTease, 3000);
+    timeoutId = setTimeout(triggerTease, 400);
 
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [isInView]);
+
+  useEffect(() => {
+    if (activeGalleryIndex !== null) return;
+    
+    const timer = setTimeout(() => {
+      const nextIndex = Math.floor(Math.random() * galleryData.length);
+      setActiveGalleryIndex(nextIndex);
+      setAnimatingIndices(prev => Array.from(new Set([...prev, nextIndex])));
+    }, 1200);
+    
+    return () => clearTimeout(timer);
+  }, [activeGalleryIndex, galleryData.length]);
 
   const handleMouseEnter = (index: number) => {
     setActiveGalleryIndex(index);
@@ -73,7 +94,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   ];
 
   return (
-    <section data-theme="light" className="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12">
+    <section ref={sectionRef} data-theme="light" className="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12">
       <div className="w-full max-w-7xl">
         <h2 className="text-4xl lg:text-5xl font-bold mb-20 text-left">
           <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">

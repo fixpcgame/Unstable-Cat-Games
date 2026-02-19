@@ -36,23 +36,32 @@ const Header = () => {
     };
   }, []);
 
+  const scrollToHome = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToBundle = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    const bundleSection = document.querySelector('section[data-theme="light"]') as HTMLElement | null;
+    if (bundleSection) {
+      bundleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const headerBaseClasses = 'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out';
   const scrolledClasses = isScrolled ? 'py-4 shadow-lg' : 'py-12 bg-transparent';
-  
-  const themeClasses = theme === 'light' 
-    ? 'bg-white/80 text-neutral-800' 
-    : 'bg-black/50 text-white';
-  
-  const combinedScrollThemeClasses = isScrolled 
-    ? `${themeClasses} backdrop-blur-lg`
-    : 'text-white';
+
+  const themeClasses = theme === 'light' ? 'bg-white/80 text-neutral-800' : 'bg-black/50 text-white';
+
+  const combinedScrollThemeClasses = isScrolled ? `${themeClasses} backdrop-blur-lg` : 'text-white';
 
   const logoFilter = theme === 'light' && isScrolled ? 'invert' : 'invert-0';
 
   return (
     <header className={`${headerBaseClasses} ${combinedScrollThemeClasses} ${scrolledClasses}`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-4">
+        <Link href="/" onClick={scrollToHome} className="flex items-center gap-4">
           <Image
             src="/logos/logo.png"
             alt="Unstable Cat Games Logo"
@@ -61,13 +70,34 @@ const Header = () => {
             className={`transition-all duration-500 ease-in-out ${logoFilter}`}
           />
         </Link>
+
         <nav className={`transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <ul className="flex items-center space-x-10 text-xl font-medium">
-            <li><Link href="/" className="hover:text-[#E46362] hover:scale-105 transition-all">Home</Link></li>
-            <li><Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">Bundles</Link></li>
-            <li><Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">PC Games</Link></li>
-            <li><Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">Mobile Games</Link></li>
-            <li><Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">Contact</Link></li>
+            <li>
+              <Link href="/" onClick={scrollToHome} className="hover:text-[#E46362] hover:scale-105 transition-all">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/" onClick={scrollToBundle} className="hover:text-[#E46362] hover:scale-105 transition-all">
+                Bundles
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">
+                PC Games
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">
+                Mobile Games
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">
+                Contact
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
