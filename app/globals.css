@@ -40,13 +40,12 @@ body {
 @keyframes bounce-y {
   0%   { top: 50%; transform: scale(1, 1); box-shadow: none; }
   15%  { transform: scale(1.3, 0.7); box-shadow: 20px 0px 25px 0px rgba(249, 196, 98, 0.5); }
-  35%  { top: -120px; transform: scale(1, 1); box-shadow: none; } /* Peak 1 */
+  35%  { top: -120px; transform: scale(1, 1); box-shadow: none; }
   55%  { transform: scale(1.3, 0.7); box-shadow: 20px 0px 25px 0px rgba(249, 196, 98, 0.5); }
-  70%  { top: 50%; transform: scale(1.2, 0.8); box-shadow: none; } /* Trough 1 */
-  85%  { top: -40px; transform: scale(1, 1); box-shadow: none; } /* Peak 2 */
-  100% { top: 50%; transform: scale(1.2, 0.8); box-shadow: none; } /* Final landing */
+  70%  { top: 50%; transform: scale(1.2, 0.8); box-shadow: none; }
+  85%  { top: -40px; transform: scale(1, 1); box-shadow: none; }
+  100% { top: 50%; transform: scale(1.2, 0.8); box-shadow: none; }
 }
-
 
 @keyframes fade-in-ball {
   from { opacity: 0; }
@@ -72,6 +71,7 @@ body {
 
 .flip-card {
   perspective: 1500px;
+  transform: translateZ(0);
 }
 
 .flipper {
@@ -84,7 +84,7 @@ body {
 }
 
 .flipper.no-transition {
-  transition: none;
+  transition: none !important;
 }
 
 .flipper.is-flipped {
@@ -98,10 +98,13 @@ body {
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  overflow: hidden;
   background-color: transparent;
 }
 
+.front {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
 .back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 }

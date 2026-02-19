@@ -50,10 +50,8 @@ async function getImagesFromFolder(folder: string): Promise<string[]> {
       .execute();
 
     const resources: CloudinaryResource[] = result.resources || [];
-    console.log(`Found ${resources.length} images in folder: ${folder}`);
     return resources.map((resource: CloudinaryResource) => resource.secure_url);
   } catch (error) {
-    console.error(`Error fetching images from folder ${folder}:`, error);
     return [];
   }
 }
