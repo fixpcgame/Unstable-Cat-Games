@@ -10,6 +10,8 @@ interface BundleProps {
 const Bundle = ({ bundleImages }: BundleProps) => {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const [animatingIndices, setAnimatingIndices] = useState<number[]>([]);
+  const [activeMole, setActiveMole] = useState<number | null>(null);
+  const [isTilted, setIsTilted] = useState(false);
 
   const galleryData = [
     { folder: 'Rocket Fuel', images: bundleImages[3] },
@@ -30,6 +32,27 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     
     return () => clearTimeout(timer);
   }, [activeGalleryIndex, galleryData.length]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const triggerTease = () => {
+      setIsTilted(true);
+      setActiveMole(Math.floor(Math.random() * 3));
+
+      setTimeout(() => {
+        setIsTilted(false);
+        setActiveMole(null);
+      }, 1500);
+
+      const nextTime = Math.floor(Math.random() * 4000) + 4000;
+      timeoutId = setTimeout(triggerTease, nextTime);
+    };
+
+    timeoutId = setTimeout(triggerTease, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   const handleMouseEnter = (index: number) => {
     setActiveGalleryIndex(index);
@@ -52,38 +75,56 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   return (
     <section data-theme="light" className="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12">
       <div className="w-full max-w-7xl">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-10 text-left">
+        <h2 className="text-4xl lg:text-5xl font-bold mb-20 text-left">
           <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
             The Unstable Cat Bundle
           </span>
         </h2>
         <div className="grid grid-cols-3 grid-rows-3 gap-4" style={{ height: '70vh', maxHeight: '800px' }}>
           
-          <div className="relative col-start-1 row-start-1 col-span-2 row-span-2 group cursor-pointer overflow-hidden rounded-xl shadow-2xl transition-all duration-500 border border-gray-200">
-            <Image 
-              src="/Assets/bundle.png" 
-              alt="The Unstable Cat Bundle" 
-              fill
-              className="object-cover z-20 transition-opacity duration-700 ease-in-out group-hover:opacity-0" 
-              priority 
-            />
-
-            <div className="absolute inset-0 bg-white flex flex-col items-center justify-center p-8 text-center z-10">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Inside the Bundle</h3>
-              <p className="text-lg text-gray-600 leading-relaxed max-w-md">
-                Experience the full collection including 
-                <span className="font-bold text-[#E46362]"> Rocket Fuel</span>, 
-                <span className="font-bold text-[#F9C462]"> Elasticity</span>, 
-                Feed, Link, and Spin Tycoon.
-              </p>
+          <div className="relative col-start-1 row-start-1 col-span-2 row-span-2 group cursor-pointer">
+            
+            <div className="absolute inset-0 z-0 opacity-100 transition-opacity duration-300 group-hover:opacity-0 pointer-events-none">
+              <div className={`absolute top-2 left-12 w-36 h-36 transition-all duration-500 ease-out origin-bottom ${activeMole === 0 && isTilted ? '-translate-y-24 rotate-12 scale-100 opacity-100' : 'translate-y-12 rotate-0 scale-75 opacity-0'}`}>
+                <Image src="/Assets/cat.png" alt="Peeking Cat" fill className="object-contain drop-shadow-md" />
+              </div>
+              <div className={`absolute top-1/3 -left-2 w-36 h-36 transition-all duration-500 ease-out origin-right ${activeMole === 1 && isTilted ? '-translate-x-24 -rotate-[75deg] scale-100 opacity-100' : 'translate-x-12 -rotate-45 scale-75 opacity-0'}`}>
+                <Image src="/Assets/cat.png" alt="Peeking Cat" fill className="object-contain drop-shadow-md" />
+              </div>
+              <div className={`absolute top-2 right-20 w-36 h-36 transition-all duration-500 ease-out origin-bottom ${activeMole === 2 && isTilted ? '-translate-y-24 -rotate-12 scale-100 opacity-100' : 'translate-y-12 rotate-0 scale-75 opacity-0'}`}>
+                <Image src="/Assets/cat.png" alt="Peeking Cat" fill className="object-contain drop-shadow-md" />
+              </div>
             </div>
 
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4">
-              <div className="bg-black/70 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-semibold tracking-wider flex items-center gap-2 shadow-xl animate-bounce">
-                <span>HOVER FOR DETAILS</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm45.66-93.66a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32-11.32L148.69,136H88a8,8,0,0,1,0-16h60.69l-18.35-18.34a8,8,0,0,1,11.32-11.32Z"></path>
-                </svg>
+            <div className={`relative w-full h-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 border border-gray-200 z-10 bg-gradient-to-br from-white to-gray-50 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] group-hover:rotate-0 ${isTilted ? '-rotate-[4deg]' : 'rotate-0'}`}>
+              <Image 
+                src="/Assets/bundle.png" 
+                alt="The Unstable Cat Bundle" 
+                fill
+                className="object-cover z-20 transition-opacity duration-700 ease-in-out group-hover:opacity-0" 
+                priority 
+              />
+
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10">
+                <div className="relative w-32 h-32 mb-4 drop-shadow-lg transition-all duration-500 delay-75 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-110">
+                  <Image 
+                    src="/Assets/cat.png" 
+                    alt="Unstable Cat" 
+                    fill 
+                    className="object-contain" 
+                  />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-800 transition-all duration-500 delay-100 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                  Inside the Bundle
+                </h3>
+                <p className="text-lg text-gray-600 leading-relaxed max-w-md transition-all duration-500 delay-150 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                  Experience the full collection including 
+                  <span className="font-bold text-[#E46362]"> Rocket Fuel</span>, 
+                  <span className="font-bold text-[#F9C462]"> Elasticity</span>, 
+                  <span className="font-bold text-[#4ECDC4]"> Feed</span>, 
+                  <span className="font-bold text-[#6B66FF]"> Link</span>, and 
+                  <span className="font-bold text-[#FF85A1]"> Spin Tycoon</span>.
+                </p>
               </div>
             </div>
           </div>
