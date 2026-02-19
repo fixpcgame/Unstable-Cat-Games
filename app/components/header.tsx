@@ -4,11 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState('dark');
+interface HeaderProps {
+  startScrolled?: boolean;
+}
+
+const Header = ({ startScrolled = false }: HeaderProps) => {
+  const [isScrolled, setIsScrolled] = useState(startScrolled);
+  const [theme, setTheme] = useState(startScrolled ? 'light' : 'dark');
 
   useEffect(() => {
+    // These effects are for the dynamic homepage header only.
+    if (startScrolled) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -22,7 +29,8 @@ const Header = () => {
           }
         });
       },
-      { rootMargin: '-100px 0px 0px 0px' }
+      // This margin ensures the theme changes when a new section is prominently in view.
+      { rootMargin: '-100px 0px -85% 0px' }
     );
 
     const sections = document.querySelectorAll('[data-theme]');
@@ -34,62 +42,76 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
       sections.forEach((section) => observer.unobserve(section));
     };
-  }, []);
+  }, [startScrolled]);
 
-  const scrollToHome = (e?: React.MouseEvent) => {
-    e?.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const scrollToBundle = (e?: React.MouseEvent) => {
-    e?.preventDefault();
-    const bundleSection = document.querySelector('section[data-theme="light"]') as HTMLElement | null;
-    if (bundleSection) {
-      bundleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleHomepageLinkClick = (e: React.MouseEvent, selector: string) => {
+    // If we're on a page like /pcgames, let the link navigate normally.
+    if (startScrolled) return;
+    
+    // Otherwise, we're on the homepage, so perform a smooth scroll.
+    e.preventDefault();
+    const element = document.querySelector(selector) as HTMLElement | null;
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
+  // --- Class Logic ---
   const headerBaseClasses = 'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out';
   const scrolledClasses = isScrolled ? 'py-4 shadow-lg' : 'py-12 bg-transparent';
-
   const themeClasses = theme === 'light' ? 'bg-white/80 text-neutral-800' : 'bg-black/50 text-white';
-
   const combinedScrollThemeClasses = isScrolled ? `${themeClasses} backdrop-blur-lg` : 'text-white';
-
-  const logoFilter = theme === 'light' && isScrolled ? 'invert' : 'invert-0';
+  
+  // LOGO FIX: Assumes the source logo image is WHITE.
+  // It inverts the color to black when the background theme is 'light'.
+  const logoFilter = theme === 'light' ? 'invert' : 'invert-0';
 
   return (
     <header className={`${headerBaseClasses} ${combinedScrollThemeClasses} ${scrolledClasses}`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" onClick={scrollToHome} className="flex items-center gap-4">
+        <Link 
+          href="/" 
+          onClick={(e) => handleHomepageLinkClick(e, 'main')}
+          className="flex items-center gap-4"
+        >
           <Image
             src="/logos/logo.png"
             alt="Unstable Cat Games Logo"
             width={isScrolled ? 120 : 240}
             height={isScrolled ? 120 : 240}
             className={`transition-all duration-500 ease-in-out ${logoFilter}`}
+            priority
           />
         </Link>
 
+        {/* Navigation is visible when scrolled or on pages that start in the scrolled state. */}
         <nav className={`transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <ul className="flex items-center space-x-10 text-xl font-medium">
             <li>
-              <Link href="/" onClick={scrollToHome} className="hover:text-[#E46362] hover:scale-105 transition-all">
+              <Link 
+                href="/" 
+                onClick={(e) => handleHomepageLinkClick(e, 'main')} 
+                className="hover:text-[#E46362] hover:scale-105 transition-all"
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/" onClick={scrollToBundle} className="hover:text-[#E46362] hover:scale-105 transition-all">
+              <Link 
+                href="/#bundle" 
+                onClick={(e) => handleHomepageLinkClick(e, '#bundle')} 
+                className="hover:text-[#E46362] hover:scale-105 transition-all"
+              >
                 Bundles
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">
+              <Link href="/pcgames" className="hover:text-[#E46362] hover:scale-105 transition-all">
                 PC Games
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-[#E46362] hover:scale-105 transition-all">
+              <Link href="/mobilegames" className="hover:text-[#E46362] hover:scale-105 transition-all">
                 Mobile Games
               </Link>
             </li>

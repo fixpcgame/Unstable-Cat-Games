@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React from 'react';
 import CacheCloudinary from './components/cachecloudinary';
 import Bundle from './components/bundle';
+import StartupAnimation from './components/startupanimation'; // Import the new component
 
 interface CloudinaryResource {
   secure_url: string;
@@ -63,29 +64,11 @@ export default async function Page() {
 
   return (
     <>
-      <div
-        className={`intro-overlay-animate fixed inset-0 z-50 flex flex-col items-center justify-center bg-black transition-opacity duration-1000 ${
-          videoSrc ? '' : 'hidden'
-        }`}
-      >
-        <div className="relative flex items-center justify-center">
-          <Image
-            src="/Assets/cat.png"
-            alt="Unstable Cat"
-            width={500}
-            height={500}
-            className="h-64 w-64 object-contain relative z-10"
-          />
-          <div className="bouncing-ball"></div>
-          <Image
-            src="/logos/logo.png"
-            alt="Unstable Cat Games Logo"
-            width={240}
-            height={240}
-            className="h-32 w-auto object-contain brightness-0 invert relative z-10"
-          />
-        </div>
-      </div>
+      {/* 
+        Replace the old animation div with our new component.
+        It will only play if a video exists AND it hasn't played before in this session.
+      */}
+      <StartupAnimation canPlay={!!videoSrc} />
 
       <main className="bg-black">
         <Header />
@@ -109,9 +92,10 @@ export default async function Page() {
 
         <section
           data-theme="dark"
-          className="bg-gray-900 text-white min-h-screen flex items-center justify-center text-4xl font-bold p-8"
+          style={{ backgroundColor: '#0f172a' }}
+          className="text-white min-h-screen flex items-center justify-center text-4xl font-bold p-8"
         >
-          <div>Dark Theme Section</div>
+          <div>Oliver colour: #0f172a</div>
         </section>
       </main>
     </>

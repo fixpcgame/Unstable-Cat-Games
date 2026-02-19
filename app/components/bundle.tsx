@@ -94,7 +94,12 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   ];
 
   return (
-    <section ref={sectionRef} data-theme="light" className="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12">
+    <section 
+      ref={sectionRef} 
+      id="bundle" 
+      data-theme="light" 
+      className="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12"
+    >
       <div className="w-full max-w-7xl">
         <h2 className="text-4xl lg:text-5xl font-bold mb-20 text-left">
           <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
