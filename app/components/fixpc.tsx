@@ -13,6 +13,23 @@ export default function FixPC({ imageUrls }: FixPCProps) {
   const [aspectRatios, setAspectRatios] = useState<Record<string, number>>({});
 
   useEffect(() => {
+    imageUrls.forEach((url) => {
+      const transformedUrl = url.includes('/upload/') 
+        ? url.replace('/upload/', '/upload/q_auto,f_auto/') 
+        : url;
+        
+      const img = new window.Image();
+      img.onload = () => {
+        setAspectRatios((prev) => ({ 
+          ...prev, 
+          [url]: img.naturalWidth / img.naturalHeight 
+        }));
+      };
+      img.src = transformedUrl;
+    });
+  }, [imageUrls]);
+
+  useEffect(() => {
     if (imageUrls.length <= 1 || isHovered) return;
 
     const timer = setTimeout(() => {
@@ -21,14 +38,6 @@ export default function FixPC({ imageUrls }: FixPCProps) {
 
     return () => clearTimeout(timer);
   }, [currentIndex, isHovered, imageUrls.length]);
-
-  const handleImageLoad = (url: string, e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (target.naturalWidth && target.naturalHeight) {
-      const ratio = target.naturalWidth / target.naturalHeight;
-      setAspectRatios((prev) => ({ ...prev, [url]: ratio }));
-    }
-  };
 
   if (imageUrls.length === 0) return null;
 
@@ -72,7 +81,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
               const isActive = index === currentIndex;
               const ratio = aspectRatios[url];
               
-              const isSuitableForCover = ratio ? (ratio >= 1.55 && ratio <= 1.95) : false;
+              const isSuitableForCover = ratio ? (ratio >= 1.45 && ratio <= 2.1) : false;
 
               return (
                 <div
@@ -100,7 +109,6 @@ export default function FixPC({ imageUrls }: FixPCProps) {
                       className={`w-full h-full ${isSuitableForCover ? 'object-cover' : 'object-contain drop-shadow-2xl'}`}
                       alt={`Fix PC Gameplay ${index + 1}`}
                       loading={index < 2 ? "eager" : "lazy"}
-                      onLoad={(e) => handleImageLoad(url, e)}
                     />
                   </div>
                 </div>
