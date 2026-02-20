@@ -13,7 +13,6 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
   const [theme, setTheme] = useState(startScrolled ? 'light' : 'dark');
 
   useEffect(() => {
-    // These effects are for the dynamic homepage header only.
     if (startScrolled) return;
 
     const handleScroll = () => {
@@ -29,7 +28,6 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
           }
         });
       },
-      // This margin ensures the theme changes when a new section is prominently in view.
       { rootMargin: '-100px 0px -85% 0px' }
     );
 
@@ -45,10 +43,8 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
   }, [startScrolled]);
 
   const handleHomepageLinkClick = (e: React.MouseEvent, selector: string) => {
-    // If we're on a page like /pcgames, let the link navigate normally.
     if (startScrolled) return;
     
-    // Otherwise, we're on the homepage, so perform a smooth scroll.
     e.preventDefault();
     const element = document.querySelector(selector) as HTMLElement | null;
     if (element) {
@@ -56,14 +52,10 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
     }
   };
 
-  // --- Class Logic ---
   const headerBaseClasses = 'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out';
   const scrolledClasses = isScrolled ? 'py-4 shadow-lg' : 'py-12 bg-transparent';
   const themeClasses = theme === 'light' ? 'bg-white/80 text-neutral-800' : 'bg-black/50 text-white';
   const combinedScrollThemeClasses = isScrolled ? `${themeClasses} backdrop-blur-lg` : 'text-white';
-  
-  // LOGO FIX: Assumes the source logo image is WHITE.
-  // It inverts the color to black when the background theme is 'light'.
   const logoFilter = theme === 'light' ? 'invert' : 'invert-0';
 
   return (
@@ -84,7 +76,6 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
           />
         </Link>
 
-        {/* Navigation is visible when scrolled or on pages that start in the scrolled state. */}
         <nav className={`transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <ul className="flex items-center space-x-10 text-xl font-medium">
             <li>

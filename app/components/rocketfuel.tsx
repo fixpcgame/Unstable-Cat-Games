@@ -1,0 +1,214 @@
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import CacheCloudinary from './cachecloudinary';
+
+interface RocketFuelProps {
+  imageUrls: string[];
+}
+
+export default function RocketFuel({ imageUrls }: RocketFuelProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const activeThumbRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (imageUrls.length <= 1 || isHovered) return;
+
+    const timer = setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageUrls.length);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [currentIndex, isHovered, imageUrls.length]);
+
+  useEffect(() => {
+    if (activeThumbRef.current && scrollContainerRef.current) {
+      activeThumbRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [currentIndex]);
+
+  if (imageUrls.length === 0) return null;
+
+  const getIndex = (offset: number) => (currentIndex + offset) % imageUrls.length;
+
+  const renderPhoneImages = (offset: number) => {
+    const targetIndex = getIndex(offset);
+    const prevTargetIndex = (targetIndex - 1 + imageUrls.length) % imageUrls.length;
+
+    return imageUrls.map((url, index) => {
+      if (index !== targetIndex && index !== prevTargetIndex) return null;
+
+      const isActive = index === targetIndex;
+      return (
+        <div
+          key={`${url}-${index}`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        >
+          <CacheCloudinary
+            assetUrl={url}
+            type="image"
+            className="w-full h-full object-cover"
+            loading={isActive ? 'eager' : 'lazy'}
+          />
+        </div>
+      );
+    });
+  };
+
+  const scrollGallery = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 150;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return (
+    <section
+      id="rocketfuel-section"
+      data-theme="light"
+      className="bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
+    >
+      <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
+        <div 
+          className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-6 relative order-2 lg:order-1 z-10"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="relative">
+            <div className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-[#E46362] to-[#F9C462] text-sm font-black tracking-widest text-white uppercase w-fit shadow-md mb-6">
+              Out Now
+            </div>
+            
+            <h2 className="text-6xl sm:text-7xl font-black leading-none mb-6 text-gray-900 tracking-tight">
+              Rocket <br />
+              <span className="text-[#E46362]">Fuel</span>
+            </h2>
+            
+            <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-[#E46362] pl-6">
+              Blast off and explore a vibrant universe. Become a boat, a snake, a plane… even a fried egg! Dodge sharks; shoot lasers; play pool and upgrade vehicles as you unlock new planets to build your galaxy.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mb-10">
+              <button className="px-8 py-4 bg-[#E46362] text-white font-bold rounded-full shadow-[0_10px_20px_rgba(228,99,98,0.3)] hover:shadow-[0_15px_30px_rgba(228,99,98,0.5)] hover:-translate-y-1 transition-all duration-300">
+                Get it on iOS
+              </button>
+              <button className="px-8 py-4 bg-gray-900 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                Get it on Android
+              </button>
+            </div>
+
+            {imageUrls.length > 1 && (
+              <div className="w-full max-w-[400px]">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gameplay Gallery</p>
+                
+                <div className="relative group/gallery flex items-center mb-4">
+                  <button 
+                    onClick={() => scrollGallery('left')}
+                    className="absolute left-0 z-20 bg-white shadow-md rounded-full p-2 text-gray-800 opacity-0 group-hover/gallery:opacity-100 transition-opacity -translate-x-4"
+                  >
+                    <FaChevronLeft size={12} />
+                  </button>
+
+                  <div 
+                    ref={scrollContainerRef}
+                    className="flex gap-3 overflow-x-auto py-2 px-1 scrollbar-hide snap-x snap-mandatory w-full" 
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    {imageUrls.map((url, idx) => {
+                      const isActive = idx === currentIndex;
+                      return (
+                        <button
+                          key={url}
+                          ref={isActive ? activeThumbRef : null}
+                          onClick={() => setCurrentIndex(idx)}
+                          className={`relative w-14 sm:w-16 aspect-[9/19.5] rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 snap-center ${
+                            isActive
+                              ? 'ring-2 ring-[#E46362] scale-105 shadow-md z-10'
+                              : 'opacity-60 hover:opacity-100 hover:scale-105 bg-gray-100'
+                          }`}
+                        >
+                          <CacheCloudinary assetUrl={url} type="image" className="w-full h-full object-cover" />
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button 
+                    onClick={() => scrollGallery('right')}
+                    className="absolute right-0 z-20 bg-white shadow-md rounded-full p-2 text-gray-800 opacity-0 group-hover/gallery:opacity-100 transition-opacity translate-x-4"
+                  >
+                    <FaChevronRight size={12} />
+                  </button>
+                </div>
+
+                <div className="flex gap-2 items-center flex-wrap">
+                  {imageUrls.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentIndex(idx)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        idx === currentIndex 
+                          ? 'w-8 bg-[#E46362]' 
+                          : 'w-2 bg-gray-300 hover:bg-gray-400'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div 
+          className="lg:col-span-7 w-full flex justify-center items-center relative order-1 lg:order-2 h-[550px] sm:h-[650px] group cursor-pointer" 
+          style={{ perspective: '1200px' }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#E46362] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
+
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-12 group-hover:scale-110 pointer-events-none drop-shadow-xl">
+            <Image 
+              src="/Assets/cat.png" 
+              alt="Peeking Cat" 
+              fill 
+              className="object-contain" 
+            />
+          </div>
+
+          <div className="relative w-full h-full flex justify-center items-center z-20">
+            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 -translate-x-12 -rotate-[10deg] scale-90 group-hover:-translate-x-32 sm:group-hover:-translate-x-48 group-hover:-rotate-[20deg] transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+              {renderPhoneImages(1)}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
+            </div>
+
+            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 translate-x-12 rotate-[10deg] scale-90 group-hover:translate-x-32 sm:group-hover:translate-x-48 group-hover:rotate-[20deg] transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+              {renderPhoneImages(2)}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
+            </div>
+
+            <div className="absolute w-[200px] sm:w-[250px] aspect-[9/19.5] rounded-[2rem] sm:rounded-[2.5rem] border-[10px] border-white shadow-[0_30px_60px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-30 group-hover:-translate-y-8 group-hover:scale-105 transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 h-6 sm:h-7 bg-white rounded-b-2xl z-30 shadow-sm" />
+              {renderPhoneImages(0)}
+              <div className="absolute -inset-full top-0 z-20 w-[200%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent -rotate-45 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
