@@ -2,12 +2,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 interface CacheCloudinaryProps {
-  assetUrl: string;
+  assetUrl: string | string[];
   type: 'video' | 'image';
   className?: string;
   alt?: string;
   onAnimationEnd?: () => void;
   loading?: 'lazy' | 'eager';
+  onLoad?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
 export default function CacheCloudinary({ 
@@ -16,23 +17,28 @@ export default function CacheCloudinary({
   className = '', 
   alt, 
   onAnimationEnd,
-  loading = 'lazy'
+  loading = 'lazy',
+  onLoad
 }: CacheCloudinaryProps) {
-  const [localVideoUrl, setLocalVideoUrl] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [localMediaUrl, setLocalMediaUrl] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const activeUrl = Array.isArray(assetUrl) ? assetUrl[currentIndex] : assetUrl;
   const transformation = type === 'video' ? 'q_auto,f_auto,vc_auto' : 'q_auto,f_auto';
-  const urlParts = assetUrl.split('/upload/');
-  let transformedUrl = assetUrl;
   
-  if (urlParts.length === 2) {
-    transformedUrl = `${urlParts[0]}/upload/${transformation}/${urlParts[1]}`;
+  let transformedUrl = activeUrl || '';
+  if (activeUrl) {
+    const urlParts = activeUrl.split('/upload/');
+    if (urlParts.length === 2) {
+      transformedUrl = `${urlParts[0]}/upload/${transformation}/${urlParts[1]}`;
+    }
   }
 
   useEffect(() => {
-    if (!assetUrl || type === 'image') return;
+    if (!activeUrl || type === 'image') return;
     
-    setLocalVideoUrl(null);
+    setLocalMediaUrl(null);
     let isMounted = true;
     let newLocalUrl: string | null = null;
 
@@ -44,7 +50,7 @@ export default function CacheCloudinary({
       .then((blob) => {
         if (isMounted) {
           newLocalUrl = URL.createObjectURL(blob);
-          setLocalVideoUrl(newLocalUrl);
+          setLocalMediaUrl(newLocalUrl);
         }
       })
       .catch((error) => console.error(error));
@@ -53,35 +59,43 @@ export default function CacheCloudinary({
       isMounted = false;
       if (newLocalUrl) URL.revokeObjectURL(newLocalUrl);
     };
-  }, [assetUrl, type, transformedUrl]);
+  }, [activeUrl, type, transformedUrl]);
 
   useEffect(() => {
-    if (type === 'video' && videoRef.current && localVideoUrl) {
+    if (type === 'video' && videoRef.current && localMediaUrl) {
       const video = videoRef.current;
-      const currentTime = video.currentTime;
-      if (video.src !== localVideoUrl) {
-        video.src = localVideoUrl;
+      if (video.src !== localMediaUrl) {
+        video.src = localMediaUrl;
         video.load();
         video.addEventListener('loadeddata', () => {
-          video.currentTime = currentTime;
           video.play().catch(e => console.error(e));
         }, { once: true });
       }
     }
-  }, [localVideoUrl, type]);
+  }, [localMediaUrl, type]);
+
+  const handleVideoEnded = () => {
+    if (Array.isArray(assetUrl) && assetUrl.length > 0) {
+      setCurrentIndex((prev) => (prev + 1) % assetUrl.length);
+    }
+  };
+
+  if (!activeUrl) return null;
 
   if (type === 'video') {
+    const isLooping = !Array.isArray(assetUrl) || assetUrl.length === 1;
     return (
       <video
         ref={videoRef}
-        key={assetUrl}
+        key={activeUrl}
         autoPlay
-        loop
+        loop={isLooping}
         muted
         playsInline
         preload="auto"
         className={`w-full h-full object-cover ${className}`}
-        src={localVideoUrl || transformedUrl}
+        src={localMediaUrl || transformedUrl}
+        onEnded={isLooping ? undefined : handleVideoEnded}
       />
     );
   }
@@ -93,6 +107,7 @@ export default function CacheCloudinary({
       className={className}
       loading={loading}
       onAnimationEnd={onAnimationEnd}
+      onLoad={onLoad}
     />
   );
 }
