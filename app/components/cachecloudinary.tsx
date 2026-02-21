@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface CacheCloudinaryProps {
   assetUrl: string | string[];
@@ -21,80 +21,44 @@ export default function CacheCloudinary({
   onLoad
 }: CacheCloudinaryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [localMediaUrl, setLocalMediaUrl] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const activeUrl = Array.isArray(assetUrl) ? assetUrl[currentIndex] : assetUrl;
   const transformation = type === 'video' ? 'q_auto,f_auto,vc_auto' : 'q_auto,f_auto';
-  
   let transformedUrl = activeUrl || '';
-  if (activeUrl) {
+  if (activeUrl && activeUrl.includes('/upload/')) {
     const urlParts = activeUrl.split('/upload/');
-    if (urlParts.length === 2) {
+    if (!urlParts[1].startsWith(transformation)) {
       transformedUrl = `${urlParts[0]}/upload/${transformation}/${urlParts[1]}`;
     }
   }
 
-  useEffect(() => {
-    if (!activeUrl || type === 'image') return;
-    
-    setLocalMediaUrl(null);
-    let isMounted = true;
-    let newLocalUrl: string | null = null;
-
-    fetch(transformedUrl, { cache: 'force-cache' })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Fetch failed for ${transformedUrl}`);
-        return res.blob();
-      })
-      .then((blob) => {
-        if (isMounted) {
-          newLocalUrl = URL.createObjectURL(blob);
-          setLocalMediaUrl(newLocalUrl);
-        }
-      })
-      .catch((error) => console.error(error));
-
-    return () => {
-      isMounted = false;
-      if (newLocalUrl) URL.revokeObjectURL(newLocalUrl);
-    };
-  }, [activeUrl, type, transformedUrl]);
-
-  useEffect(() => {
-    if (type === 'video' && videoRef.current && localMediaUrl) {
-      const video = videoRef.current;
-      if (video.src !== localMediaUrl) {
-        video.src = localMediaUrl;
-        video.load();
-        video.addEventListener('loadeddata', () => {
-          video.play().catch(e => console.error(e));
-        }, { once: true });
-      }
-    }
-  }, [localMediaUrl, type]);
-
   const handleVideoEnded = () => {
-    if (Array.isArray(assetUrl) && assetUrl.length > 0) {
+    if (Array.isArray(assetUrl) && assetUrl.length > 1) {
       setCurrentIndex((prev) => (prev + 1) % assetUrl.length);
     }
   };
 
+  useEffect(() => {
+    if (type === 'video' && videoRef.current) {
+      videoRef.current.play().catch(e => console.error("Autoplay prevented by browser:", e));
+    }
+  }, [transformedUrl, type]);
+
   if (!activeUrl) return null;
 
   if (type === 'video') {
-    const isLooping = !Array.isArray(assetUrl) || assetUrl.length === 1;
+    const isLooping = !Array.isArray(assetUrl) || assetUrl.length <= 1;
     return (
       <video
         ref={videoRef}
-        key={activeUrl}
+        key={transformedUrl}
         autoPlay
         loop={isLooping}
         muted
         playsInline
         preload="auto"
-        className={`w-full h-full object-cover ${className}`}
-        src={localMediaUrl || transformedUrl}
+        className={className}
+        src={transformedUrl}
         onEnded={isLooping ? undefined : handleVideoEnded}
       />
     );
@@ -102,6 +66,7 @@ export default function CacheCloudinary({
 
   return (
     <img
+      key={transformedUrl}
       src={transformedUrl}
       alt={alt || ''}
       className={className}

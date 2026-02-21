@@ -1,11 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary';
 import Header from './components/header';
 import { CONFIG } from './utils/config';
-import Image from 'next/image';
 import React from 'react';
 import CacheCloudinary from './components/cachecloudinary';
 import Bundle from './components/bundle';
 import StartupAnimation from './components/startupanimation';
+import AboutMe from './components/aboutme';
+import Community from './components/community';
 
 interface CloudinaryResource {
   secure_url: string;
@@ -66,7 +67,7 @@ export default async function Page() {
     <>
       <StartupAnimation canPlay={!!videoSrc} />
 
-      <main className="bg-black">
+      <main className="bg-[#0a0a0a]">
         <Header />
 
         <section data-theme="dark" className="relative h-screen w-full">
@@ -78,21 +79,17 @@ export default async function Page() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-black" />
+              <div className="w-full h-full bg-[#0a0a0a]" />
             )}
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-black/40" />
           </div>
         </section>
 
+        <AboutMe />
+
         <Bundle bundleImages={bundleImages} />
 
-        <section
-          data-theme="dark"
-          style={{ backgroundColor: '#0f172a' }}
-          className="text-white min-h-screen flex items-center justify-center text-4xl font-bold p-8"
-        >
-          <div>Oliver colour: #0f172a</div>
-        </section>
+        <Community />
       </main>
     </>
   );

@@ -88,7 +88,7 @@ export default function LinkGame({ imageUrls }: LinkGameProps) {
     <section
       id="link-section"
       data-theme="light"
-      className="bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
+      className="scroll-mt-24 sm:scroll-mt-32 bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
     >
       <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
         

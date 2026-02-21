@@ -77,7 +77,7 @@ export default async function PCGamesPage() {
         </div>
       </section>
 
-      <section id="fixpc-hero" className="relative h-screen w-full overflow-hidden">
+      <section id="fixpc-hero" className="scroll-mt-24 sm:scroll-mt-32 relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">
           {fixPcVideoUrls.length > 0 && (
             <CacheCloudinary
@@ -104,7 +104,7 @@ export default async function PCGamesPage() {
 
       <FixPC imageUrls={fixPcImageUrls} />
 
-      <section id="rightthatsit-hero" className="relative h-screen w-full overflow-hidden">
+      <section id="rightthatsit-hero" className="scroll-mt-24 sm:scroll-mt-32 relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">
           {rightThatsItVideoUrls.length > 0 && (
             <CacheCloudinary

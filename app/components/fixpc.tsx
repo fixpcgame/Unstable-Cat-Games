@@ -120,7 +120,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
     <section
       id="fixpc-gallery"
       data-theme="light"
-      className="bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10"
+      className="scroll-mt-24 sm:scroll-mt-32 bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10"
     >
       <style dangerouslySetInnerHTML={{
         __html: `

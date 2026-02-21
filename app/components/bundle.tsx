@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import BundleGallery from './bundlegallery';
 
 interface BundleProps {
@@ -16,11 +17,11 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   const sectionRef = useRef<HTMLElement>(null);
 
   const galleryData = [
-    { folder: 'Rocket Fuel', images: bundleImages[3] },
-    { folder: 'Elasticity', images: bundleImages[2] },
-    { folder: 'Feed', images: bundleImages[1] },
-    { folder: 'Link', images: bundleImages[4] },
-    { folder: 'Spin Tycoon', images: bundleImages[0] },
+    { folder: 'Rocket Fuel', images: bundleImages[3], link: '/mobilegames#rocketfuel-section' },
+    { folder: 'Elasticity', images: bundleImages[2], link: '/mobilegames#elasticity-section' },
+    { folder: 'Feed', images: bundleImages[1], link: '/mobilegames#feed-section' },
+    { folder: 'Link', images: bundleImages[4], link: '/mobilegames#link-section' },
+    { folder: 'Spin Tycoon', images: bundleImages[0], link: '/mobilegames#spintycoon-section' },
   ];
 
   useEffect(() => {
@@ -103,7 +104,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
       <div className="w-full max-w-7xl">
         <h2 className="text-4xl lg:text-5xl font-bold mb-20 text-left">
           <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
-            The Unstable Cat Bundle
+            Explore the mobile bundle
           </span>
         </h2>
         <div className="grid grid-cols-3 grid-rows-3 gap-4" style={{ height: '70vh', maxHeight: '800px' }}>
@@ -122,7 +123,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
               </div>
             </div>
 
-            <div className={`relative w-full h-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 border border-gray-200 z-10 bg-gradient-to-br from-white to-gray-50 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] group-hover:rotate-0 ${isTilted ? '-rotate-[4deg]' : 'rotate-0'}`}>
+            <Link href="/mobilegames" className={`block relative w-full h-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 border border-gray-200 z-10 bg-gradient-to-br from-white to-gray-50 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] group-hover:rotate-0 ${isTilted ? '-rotate-[4deg]' : 'rotate-0'}`}>
               <Image 
                 src="/Assets/bundle.png" 
                 alt="The Unstable Cat Bundle" 
@@ -152,7 +153,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
                   <span className="font-bold text-[#FF85A1]"> Spin Tycoon</span>.
                 </p>
               </div>
-            </div>
+            </Link>
           </div>
 
           {galleryData.map((item, index) => {
@@ -164,13 +165,15 @@ const Bundle = ({ bundleImages }: BundleProps) => {
                   ${isCurrentlyAnimating ? 'scale-105 z-40 shadow-none' : 'shadow-2xl hover:scale-105 hover:shadow-none'}`}
                 onMouseEnter={() => handleMouseEnter(index)}
               >
-                <BundleGallery
-                  imageUrls={item.images}
-                  alt={`${item.folder} game screenshot`}
-                  className="rounded-lg h-full w-full"
-                  isAllowedToAnimate={isCurrentlyAnimating}
-                  onAnimationComplete={() => handleAnimationComplete(index)}
-                />
+                <Link href={item.link} className="block w-full h-full">
+                  <BundleGallery
+                    imageUrls={item.images}
+                    alt={`${item.folder} game screenshot`}
+                    className="rounded-lg h-full w-full"
+                    isAllowedToAnimate={isCurrentlyAnimating}
+                    onAnimationComplete={() => handleAnimationComplete(index)}
+                  />
+                </Link>
               </div>
             );
           })}
