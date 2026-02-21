@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import CacheCloudinary from './cachecloudinary';
 
-interface RocketFuelProps {
+interface SpinTycoonProps {
   imageUrls: string[];
 }
 
-export default function RocketFuel({ imageUrls }: RocketFuelProps) {
+export default function SpinTycoon({ imageUrls }: SpinTycoonProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [galleryPage, setGalleryPage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -86,36 +86,37 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
 
   return (
     <section
-      id="rocketfuel-section"
+      id="spintycoon-section"
       data-theme="light"
       className="bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
     >
       <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
+        
         <div 
           className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-8 relative order-2 lg:order-1 z-10"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="relative">
-            <div className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-[#E46362] to-[#F9C462] text-sm font-black tracking-widest text-white uppercase w-fit shadow-md mb-6">
-              Out Now
+            <div className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-[#45a1d4] to-[#71bdec] text-sm font-black tracking-widest text-white uppercase w-fit shadow-md mb-6">
+              Work In Progress
             </div>
             
             <h2 className="text-6xl sm:text-7xl font-black leading-none mb-6 text-gray-900 tracking-tight">
-              Rocket <br />
-              <span className="text-[#E46362]">Fuel</span>
+              Spin <br />
+              <span className="text-[#45a1d4]">Tycoon</span>
             </h2>
             
-            <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-[#E46362] pl-6">
-              Blast off and explore a vibrant universe. Become a boat, a snake, a plane… even a fried egg! Dodge sharks; shoot lasers; play pool and upgrade vehicles as you unlock new planets to build your galaxy.
+            <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-[#45a1d4] pl-6">
+              Spin Cards. Build an empire.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-10">
-              <button className="px-8 py-4 bg-[#E46362] text-white font-bold rounded-full shadow-[0_10px_20px_rgba(228,99,98,0.3)] hover:shadow-[0_15px_30px_rgba(228,99,98,0.5)] hover:-translate-y-1 transition-all duration-300">
-                Get it on iOS
+              <button className="px-8 py-4 bg-gray-300 text-gray-600 cursor-not-allowed font-bold rounded-full transition-all duration-300">
+                Coming to iOS
               </button>
-              <button className="px-8 py-4 bg-gray-900 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                Get it on Android
+              <button className="px-8 py-4 bg-gray-300 text-gray-600 cursor-not-allowed font-bold rounded-full transition-all duration-300">
+                Coming to Android
               </button>
             </div>
 
@@ -145,7 +146,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
                           onClick={() => setCurrentIndex(idx)}
                           className={`relative w-16 sm:w-20 aspect-[9/19.5] rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 snap-center ${
                             isActive
-                              ? 'ring-4 ring-[#E46362] scale-105 shadow-md z-10 mx-1'
+                              ? 'ring-4 ring-[#45a1d4] scale-105 shadow-md z-10 mx-1'
                               : 'opacity-60 hover:opacity-100 hover:scale-105 hover:z-10 bg-gray-200'
                           }`}
                         >
@@ -171,7 +172,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
                         onClick={() => setGalleryPage(idx)}
                         className={`h-2 rounded-full transition-all duration-300 ${
                           idx === galleryPage 
-                            ? 'w-8 bg-[#E46362]' 
+                            ? 'w-8 bg-[#45a1d4]' 
                             : 'w-2 bg-gray-300 hover:bg-gray-400'
                         }`}
                       />
@@ -189,7 +190,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#E46362] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#45a1d4] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
 
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-12 group-hover:scale-110 pointer-events-none drop-shadow-xl">
             <Image 

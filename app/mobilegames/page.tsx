@@ -3,6 +3,10 @@ import Header from '../components/header';
 import { CONFIG } from '../utils/config';
 import React from 'react';
 import RocketFuel from '../components/rocketfuel';
+import Elasticity from '../components/elasticity';
+import Feed from '../components/feed';
+import LinkGame from '../components/link';
+import SpinTycoon from '../components/spintycoon';
 
 interface CloudinaryResource {
   secure_url: string;
@@ -32,6 +36,10 @@ async function getImagesFromFolder(folder: string): Promise<string[]> {
 
 export default async function MobileGamesPage() {
   const rocketFuelImages = await getImagesFromFolder('Mobile Games/Rocket Fuel');
+  const elasticityImages = await getImagesFromFolder('Mobile Games/Elasticity');
+  const feedImages = await getImagesFromFolder('Mobile Games/Feed');
+  const linkImages = await getImagesFromFolder('Mobile Games/Link');
+  const spinTycoonImages = await getImagesFromFolder('Mobile Games/Spin Tycoon');
 
   return (
     <main className="bg-white min-h-screen text-gray-900">
@@ -47,9 +55,27 @@ export default async function MobileGamesPage() {
               Mobile
             </span> Games
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-300 font-light max-w-2xl mx-auto">
+          <p className="text-xl sm:text-2xl text-gray-300 font-light max-w-2xl mx-auto mb-10">
             Pocket-sized chaos. Explore our collection of vibrant, fast-paced games built for everywhere you go.
           </p>
+
+          <div className="flex flex-wrap gap-4 justify-center max-w-4xl mx-auto">
+            <a href="#rocketfuel-section" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg text-sm sm:text-base">
+              Rocket Fuel
+            </a>
+            <a href="#elasticity-section" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg text-sm sm:text-base">
+              Elasticity
+            </a>
+            <a href="#feed-section" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg text-sm sm:text-base">
+              Feed
+            </a>
+            <a href="#link-section" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg text-sm sm:text-base">
+              Link
+            </a>
+            <a href="#spintycoon-section" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg text-sm sm:text-base">
+              Spin Tycoon
+            </a>
+          </div>
         </div>
         
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
@@ -63,8 +89,12 @@ export default async function MobileGamesPage() {
         </div>
       </section>
 
-      <div className="w-full pb-24 bg-white relative z-30">
+      <div className="w-full pb-24 bg-white relative z-30 flex flex-col">
         <RocketFuel imageUrls={rocketFuelImages} />
+        <Elasticity imageUrls={elasticityImages} />
+        <Feed imageUrls={feedImages} />
+        <LinkGame imageUrls={linkImages} />
+        <SpinTycoon imageUrls={spinTycoonImages} />
       </div>
     </main>
   );

@@ -83,7 +83,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
           }`}
         >
           {!isSuitableForCover && (
-            <div className="absolute inset-0 z-0 scale-110 blur-2xl opacity-30">
+            <div className="absolute inset-0 z-0 scale-125 blur-2xl opacity-80 mix-blend-multiply">
               <CacheCloudinary
                 assetUrl={url}
                 type="image"
@@ -124,15 +124,15 @@ export default function FixPC({ imageUrls }: FixPCProps) {
     >
       <style dangerouslySetInnerHTML={{
         __html: `
-        @keyframes peek-cat {
-          0%, 20% { transform: translate(20px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
-          25%, 35% { transform: translate(-110px, -90px) rotate(-25deg) scale(1.2); opacity: 1; }
-          40%, 60% { transform: translate(20px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
-          65%, 75% { transform: translate(-120px, 150px) rotate(-50deg) scale(1.1); opacity: 1; }
-          80%, 100% { transform: translate(20px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
+        @keyframes peek-cat-fixpc {
+          0%, 20% { transform: translate(0px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
+          25%, 35% { transform: translate(40px, -80px) rotate(25deg) scale(1.2); opacity: 1; }
+          40%, 60% { transform: translate(0px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
+          65%, 75% { transform: translate(60px, -100px) rotate(45deg) scale(1.2); opacity: 1; }
+          80%, 100% { transform: translate(0px, 20px) rotate(0deg) scale(0.8); opacity: 0; }
         }
-        .animate-peek-cat {
-          animation: peek-cat 10s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+        .animate-peek-cat-fixpc {
+          animation: peek-cat-fixpc 10s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
         }
       `}} />
 
@@ -152,7 +152,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
           </div>
 
           <div className="relative z-10">
-            <div className="inline-block px-5 py-2 rounded-full bg-gray-200 text-sm font-black tracking-widest text-gray-700 uppercase w-fit shadow-sm mb-6">
+            <div className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-sm font-black tracking-widest text-white uppercase w-fit shadow-md mb-6">
               Work In Progress
             </div>
             
@@ -199,7 +199,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
                           onClick={() => setCurrentIndex(idx)}
                           className={`relative w-24 sm:w-28 aspect-video rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${
                             isActive
-                              ? 'ring-2 ring-cyan-500 scale-105 shadow-md z-10'
+                              ? 'ring-4 ring-cyan-500 scale-105 shadow-md z-10'
                               : 'opacity-60 hover:opacity-100 hover:scale-105 bg-gray-100'
                           }`}
                         >
@@ -242,16 +242,18 @@ export default function FixPC({ imageUrls }: FixPCProps) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="absolute top-0 left-0 w-48 h-48 z-0 animate-peek-cat pointer-events-none">
-            <Image 
-              src="/Assets/cat.png" 
-              alt="Unstable Cat" 
-              fill 
-              className="object-contain drop-shadow-2xl" 
-            />
+          <div className="absolute top-0 right-10 w-32 h-32 z-0 pointer-events-none">
+            <div className="w-full h-full animate-peek-cat-fixpc">
+              <Image 
+                src="/Assets/cat.png" 
+                alt="Unstable Cat" 
+                fill 
+                className="object-contain drop-shadow-2xl" 
+              />
+            </div>
           </div>
 
-          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-gray-100 z-10 group">
+          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-gray-50 z-10 group">
             <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             {renderImages()}
           </div>
