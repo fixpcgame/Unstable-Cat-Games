@@ -40,9 +40,44 @@ export default async function PCGamesPage() {
 
   return (
     <main className="bg-[#0a0a0a] min-h-screen">
-      <Header startScrolled={true} />
+      <Header startScrolled={false} />
 
-      <section className="relative h-screen w-full overflow-hidden">
+      <section 
+        data-theme="dark" 
+        className="relative pt-48 pb-32 px-4 sm:px-12 w-full flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1f1f1f] via-[#0a0a0a] to-[#000000]"
+      >
+        <div className="relative z-10 max-w-7xl w-full text-center mb-12">
+          <h1 className="text-6xl sm:text-8xl font-black mb-6 tracking-tight text-white">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-white">
+              PC
+            </span> Games
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-400 font-light max-w-2xl mx-auto mb-10">
+            Immersive worlds and deep mechanics. Discover our premium desktop experiences crafted for maximum chaos.
+          </p>
+          
+          <div className="flex flex-wrap gap-4 justify-center">
+            <a href="#fixpc-hero" className="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg">
+              Fix PC
+            </a>
+            <a href="#rightthatsit-hero" className="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all duration-300 backdrop-blur-sm shadow-lg">
+              Right Thats It
+            </a>
+          </div>
+        </div>
+        
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
+          <svg 
+            className="relative block w-full h-[8vw] min-h-[60px] max-h-[150px]" 
+            viewBox="0 0 1440 100" 
+            preserveAspectRatio="none"
+          >
+            <path fill="#000000" d="M0,100 L1440,100 L1440,50 C1080,150 360,-50 0,50 Z"></path>
+          </svg>
+        </div>
+      </section>
+
+      <section id="fixpc-hero" className="relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">
           {fixPcVideoUrls.length > 0 && (
             <CacheCloudinary
@@ -52,7 +87,7 @@ export default async function PCGamesPage() {
               loading="eager"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-[#0a0a0a]" />
         </div>
 
         <div className="absolute bottom-0 left-0 w-full p-8 sm:p-16 z-10 flex flex-col items-start justify-end h-full">
@@ -69,7 +104,7 @@ export default async function PCGamesPage() {
 
       <FixPC imageUrls={fixPcImageUrls} />
 
-      <section className="relative h-screen w-full overflow-hidden">
+      <section id="rightthatsit-hero" className="relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">
           {rightThatsItVideoUrls.length > 0 && (
             <CacheCloudinary
@@ -78,7 +113,7 @@ export default async function PCGamesPage() {
               className="w-full h-full object-cover opacity-70"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-[#0a0a0a]" />
         </div>
 
         <div className="absolute bottom-0 right-0 w-full p-8 sm:p-16 z-10 flex flex-col items-end justify-end h-full text-right">

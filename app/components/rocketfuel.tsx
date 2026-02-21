@@ -10,9 +10,14 @@ interface RocketFuelProps {
 
 export default function RocketFuel({ imageUrls }: RocketFuelProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryPage, setGalleryPage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const activeThumbRef = useRef<HTMLButtonElement>(null);
+
+  const ITEMS_PER_PAGE = 4;
+  const totalPages = Math.ceil(imageUrls.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
     if (imageUrls.length <= 1 || isHovered) return;
@@ -25,12 +30,17 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
   }, [currentIndex, isHovered, imageUrls.length]);
 
   useEffect(() => {
+    if (imageUrls.length > 0) {
+      setGalleryPage(Math.floor(currentIndex / ITEMS_PER_PAGE));
+    }
+  }, [currentIndex, imageUrls.length]);
+
+  useEffect(() => {
     if (activeThumbRef.current && scrollContainerRef.current) {
-      activeThumbRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
+      const container = scrollContainerRef.current;
+      const thumb = activeThumbRef.current;
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     }
   }, [currentIndex]);
 
@@ -82,7 +92,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
     >
       <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
         <div 
-          className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-6 relative order-2 lg:order-1 z-10"
+          className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-8 relative order-2 lg:order-1 z-10"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -110,7 +120,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
             </div>
 
             {imageUrls.length > 1 && (
-              <div className="w-full max-w-[400px]">
+              <div className="w-full">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gameplay Gallery</p>
                 
                 <div className="relative group/gallery flex items-center mb-4">
@@ -135,8 +145,8 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
                           onClick={() => setCurrentIndex(idx)}
                           className={`relative w-14 sm:w-16 aspect-[9/19.5] rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 snap-center ${
                             isActive
-                              ? 'ring-2 ring-[#E46362] scale-105 shadow-md z-10'
-                              : 'opacity-60 hover:opacity-100 hover:scale-105 bg-gray-100'
+                              ? 'ring-4 ring-[#E46362] scale-110 shadow-lg z-10 mx-1'
+                              : 'opacity-60 hover:opacity-100 hover:scale-105 hover:z-10 bg-gray-200'
                           }`}
                         >
                           <CacheCloudinary assetUrl={url} type="image" className="w-full h-full object-cover" />
@@ -153,19 +163,21 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
                   </button>
                 </div>
 
-                <div className="flex gap-2 items-center flex-wrap">
-                  {imageUrls.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentIndex(idx)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        idx === currentIndex 
-                          ? 'w-8 bg-[#E46362]' 
-                          : 'w-2 bg-gray-300 hover:bg-gray-400'
-                      }`}
-                    />
-                  ))}
-                </div>
+                {totalPages > 1 && (
+                  <div className="flex gap-2 items-center h-4">
+                    {Array.from({ length: totalPages }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setGalleryPage(idx)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          idx === galleryPage 
+                            ? 'w-8 bg-[#E46362]' 
+                            : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -208,6 +220,7 @@ export default function RocketFuel({ imageUrls }: RocketFuelProps) {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React from 'react';
 import CacheCloudinary from './components/cachecloudinary';
 import Bundle from './components/bundle';
-import StartupAnimation from './components/startupanimation'; // Import the new component
+import StartupAnimation from './components/startupanimation';
 
 interface CloudinaryResource {
   secure_url: string;
@@ -64,10 +64,6 @@ export default async function Page() {
 
   return (
     <>
-      {/* 
-        Replace the old animation div with our new component.
-        It will only play if a video exists AND it hasn't played before in this session.
-      */}
       <StartupAnimation canPlay={!!videoSrc} />
 
       <main className="bg-black">

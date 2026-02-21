@@ -1,6 +1,7 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import CacheCloudinary from './cachecloudinary';
 
 interface RightThatsItProps {
@@ -9,8 +10,15 @@ interface RightThatsItProps {
 
 export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryPage, setGalleryPage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [aspectRatios, setAspectRatios] = useState<Record<string, number>>({});
+  
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const activeThumbRef = useRef<HTMLButtonElement>(null);
+
+  const ITEMS_PER_PAGE = 4;
+  const totalPages = Math.ceil(imageUrls.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
     imageUrls.forEach((url) => {
@@ -39,12 +47,80 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
     return () => clearTimeout(timer);
   }, [currentIndex, isHovered, imageUrls.length]);
 
+  useEffect(() => {
+    if (imageUrls.length > 0) {
+      setGalleryPage(Math.floor(currentIndex / ITEMS_PER_PAGE));
+    }
+  }, [currentIndex, imageUrls.length]);
+
+  useEffect(() => {
+    if (activeThumbRef.current && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const thumb = activeThumbRef.current;
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    }
+  }, [currentIndex]);
+
   if (imageUrls.length === 0) return null;
+
+  const renderImages = () => {
+    const targetIndex = currentIndex;
+    const prevTargetIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+
+    return imageUrls.map((url, index) => {
+      if (index !== targetIndex && index !== prevTargetIndex) return null;
+
+      const isActive = index === targetIndex;
+      const ratio = aspectRatios[url];
+      const isSuitableForCover = ratio ? (ratio >= 1.45 && ratio <= 2.1) : false;
+
+      return (
+        <div
+          key={`${url}-${index}`}
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out flex items-center justify-center overflow-hidden ${
+            isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        >
+          {!isSuitableForCover && (
+            <div className="absolute inset-0 z-0 scale-110 blur-2xl opacity-30">
+              <CacheCloudinary
+                assetUrl={url}
+                type="image"
+                className="w-full h-full object-cover"
+                loading={isActive ? 'eager' : 'lazy'}
+              />
+            </div>
+          )}
+
+          <div className={`relative z-10 w-full h-full ${isSuitableForCover ? '' : 'p-2'} transition-transform duration-1000 ${isActive ? 'scale-100' : 'scale-105'}`}>
+            <CacheCloudinary
+              assetUrl={url}
+              type="image"
+              className={`w-full h-full ${isSuitableForCover ? 'object-cover' : 'object-contain drop-shadow-2xl'}`}
+              loading={isActive ? 'eager' : 'lazy'}
+            />
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const scrollGallery = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <section
       id="rightthatsit-gallery"
-      className="bg-[#0a0a0a] text-white w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
+      data-theme="light"
+      className="bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10"
     >
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -60,42 +136,9 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
         }
       `}} />
 
-      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-12 items-center relative">
-        
-        <div className="xl:col-span-4 w-full flex flex-col justify-center text-left space-y-8 relative order-2 xl:order-1">
-          <div className="absolute -top-16 left-80 w-32 h-32 opacity-90 -rotate-12 hover:-rotate-6 hover:scale-110 transition-all duration-300 z-0 pointer-events-none">
-            <Image 
-              src="/Assets/rightthatsit.png" 
-              alt="Right Thats It Sticker" 
-              fill 
-              className="object-contain drop-shadow-2xl" 
-            />
-          </div>
-
-          <div className="relative z-10">
-            <div className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 via-[#E46362] to-[#F9C462] text-sm font-black tracking-widest text-white uppercase w-fit shadow-[0_0_20px_rgba(228,99,98,0.4)] mb-6">
-              Work In Progress
-            </div>
-            
-            <h2 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
-              Master the <br />
-              <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
-                Platform
-              </span>
-            </h2>
-            
-            <p className="text-xl text-gray-400 font-light leading-relaxed mb-8">
-              The best platformer in the games module designed to push your reflexes to the limit. Navigate through treacherous levels with precision and speed.
-            </p>
-
-            <p className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse">
-              Coming to Steam soon...
-            </p>
-          </div>
-        </div>
-
+      <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
         <div 
-          className="xl:col-span-8 w-full flex flex-col items-center relative order-1 xl:order-2"
+          className="lg:col-span-7 w-full flex flex-col items-center relative order-1 lg:order-1"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -108,67 +151,110 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
             />
           </div>
 
-          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-gray-800 bg-[#050505] z-10">
-            {imageUrls.map((url, index) => {
-              const isActive = index === currentIndex;
-              const ratio = aspectRatios[url];
-              const isSuitableForCover = ratio ? (ratio >= 1.45 && ratio <= 2.1) : false;
-
-              return (
-                <div
-                  key={url}
-                  className={`absolute inset-0 transition-all duration-1000 ease-in-out flex items-center justify-center overflow-hidden ${
-                    isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                  }`}
-                >
-                  {!isSuitableForCover && (
-                    <div className="absolute inset-0 z-0 scale-110 blur-xl opacity-40">
-                      <CacheCloudinary
-                        assetUrl={url}
-                        type="image"
-                        className="w-full h-full object-cover"
-                        alt=""
-                        loading={index < 2 ? "eager" : "lazy"}
-                      />
-                    </div>
-                  )}
-
-                  <div className={`relative z-10 w-full h-full ${isSuitableForCover ? '' : 'p-2'} transition-transform duration-1000 ${isActive ? 'scale-100' : 'scale-105'}`}>
-                    <CacheCloudinary
-                      assetUrl={url}
-                      type="image"
-                      className={`w-full h-full ${isSuitableForCover ? 'object-cover' : 'object-contain drop-shadow-2xl'}`}
-                      alt={`Right Thats It Gameplay ${index + 1}`}
-                      loading={index < 2 ? "eager" : "lazy"}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-gray-100 z-10 group">
+            <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            {renderImages()}
           </div>
-          
-          {imageUrls.length > 1 && (
-            <div className="flex gap-4 mt-8 w-full max-w-lg z-10">
-              {imageUrls.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className="relative h-2 flex-1 rounded-full bg-gray-800 overflow-hidden cursor-pointer"
-                  aria-label={`Show image ${index + 1}`}
-                >
-                  <div 
-                    className={`absolute top-0 left-0 h-full bg-gradient-to-r from-[#E46362] to-[#F9C462] ease-linear ${
-                      index === currentIndex && !isHovered
-                        ? 'w-full transition-[width] duration-[4000ms]' 
-                        : index < currentIndex 
-                          ? 'w-full transition-none' 
-                          : 'w-0 transition-none'
-                    }`}
-                  />
-                </button>
-              ))}
+        </div>
+
+        <div 
+          className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-6 relative order-2 lg:order-2 z-10"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="absolute -top-16 left-64 w-36 h-36 opacity-80 -rotate-12 hover:-rotate-6 hover:scale-110 transition-all duration-500 z-0 pointer-events-none">
+            <Image 
+              src="/Assets/rightthatsit.png" 
+              alt="Right Thats It Sticker" 
+              fill 
+              className="object-contain drop-shadow-2xl" 
+            />
+          </div>
+
+          <div className="relative z-10">
+            <div className="inline-block px-5 py-2 rounded-full bg-gray-200 text-sm font-black tracking-widest text-gray-700 uppercase w-fit shadow-sm mb-6">
+              Work In Progress
             </div>
-          )}
+            
+            <h2 className="text-5xl sm:text-6xl font-black leading-tight mb-6 tracking-tight text-gray-900">
+              Master the <br />
+              <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
+                Platform
+              </span>
+            </h2>
+            
+            <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-[#F9C462] pl-6">
+              The best platformer in the games module designed to push your reflexes to the limit. Navigate through treacherous levels with precision and speed.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mb-10">
+              <button className="px-8 py-4 bg-gray-900 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                Wishlist on Steam
+              </button>
+            </div>
+
+            {imageUrls.length > 1 && (
+              <div className="w-full max-w-[400px]">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gameplay Gallery</p>
+                
+                <div className="relative group/gallery flex items-center mb-4">
+                  <button 
+                    onClick={() => scrollGallery('left')}
+                    className="absolute left-0 z-20 bg-white shadow-md rounded-full p-2 text-gray-800 opacity-0 group-hover/gallery:opacity-100 transition-opacity -translate-x-4"
+                  >
+                    <FaChevronLeft size={12} />
+                  </button>
+
+                  <div 
+                    ref={scrollContainerRef}
+                    className="relative flex gap-3 overflow-x-auto py-2 px-1 scrollbar-hide w-full" 
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    {imageUrls.map((url, idx) => {
+                      const isActive = idx === currentIndex;
+                      return (
+                        <button
+                          key={url}
+                          ref={isActive ? activeThumbRef : null}
+                          onClick={() => setCurrentIndex(idx)}
+                          className={`relative w-24 sm:w-28 aspect-video rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                            isActive
+                              ? 'ring-2 ring-[#F9C462] scale-105 shadow-md z-10'
+                              : 'opacity-60 hover:opacity-100 hover:scale-105 bg-gray-100'
+                          }`}
+                        >
+                          <CacheCloudinary assetUrl={url} type="image" className="w-full h-full object-cover" />
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button 
+                    onClick={() => scrollGallery('right')}
+                    className="absolute right-0 z-20 bg-white shadow-md rounded-full p-2 text-gray-800 opacity-0 group-hover/gallery:opacity-100 transition-opacity translate-x-4"
+                  >
+                    <FaChevronRight size={12} />
+                  </button>
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="flex gap-2 items-center flex-wrap">
+                    {Array.from({ length: totalPages }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setGalleryPage(idx)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          idx === galleryPage 
+                            ? 'w-8 bg-[#F9C462]' 
+                            : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
