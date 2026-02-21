@@ -5,8 +5,9 @@ import Image from 'next/image';
 export default function Community() {
   return (
     <section data-theme="light" className="relative w-full bg-gradient-to-b from-gray-100 to-white flex flex-col z-10 pt-12 sm:pt-24">
+      
       <div className="w-full relative aspect-[3114/930] flex flex-col items-center justify-center">
-
+        
         <Image 
           src="/Assets/community.png" 
           alt="Unstable Cat Community Banner" 
@@ -14,7 +15,7 @@ export default function Community() {
           className="object-cover opacity-100" 
           priority
         />
-
+        
         <div className="absolute inset-0 bg-black/40" />
 
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-12 w-full max-w-5xl">
@@ -39,12 +40,6 @@ export default function Community() {
           </a>
         </div>
       </div>
-
-      <footer className="w-full py-12 text-center relative z-10 bg-white">
-        <p className="text-gray-500 text-sm sm:text-base font-medium tracking-wide">
-          &copy; 2026 Unstable Cat Games. All rights reserved.
-        </p>
-      </footer>
       
     </section>
   );

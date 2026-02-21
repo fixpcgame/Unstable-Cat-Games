@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import Header from '../components/header';
+import Footer from '../components/footer';
 import { CONFIG } from '../utils/config';
 import React from 'react';
 import CacheCloudinary from '../components/cachecloudinary';
@@ -40,7 +41,7 @@ export default async function PCGamesPage() {
 
   return (
     <main className="bg-[#0a0a0a] min-h-screen">
-      <Header startScrolled={false} />
+      <Header startScrolled={true} />
 
       <section 
         data-theme="dark" 
@@ -129,6 +130,8 @@ export default async function PCGamesPage() {
       </section>
 
       <RightThatsIt imageUrls={rightThatsItImageUrls} />
+
+      <Footer />
     </main>
   );
 }

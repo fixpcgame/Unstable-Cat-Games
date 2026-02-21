@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import Header from '../components/header';
+import Footer from '../components/footer';
 import { CONFIG } from '../utils/config';
 import React from 'react';
 import RocketFuel from '../components/rocketfuel';
@@ -43,7 +44,7 @@ export default async function MobileGamesPage() {
 
   return (
     <main className="bg-white min-h-screen text-gray-900">
-      <Header startScrolled={false} />
+      <Header startScrolled={true} />
 
       <section 
         data-theme="dark" 
@@ -96,6 +97,8 @@ export default async function MobileGamesPage() {
         <LinkGame imageUrls={linkImages} />
         <SpinTycoon imageUrls={spinTycoonImages} />
       </div>
+
+      <Footer />
     </main>
   );
 }

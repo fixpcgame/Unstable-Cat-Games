@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import Header from './components/header';
+import Footer from './components/footer';
 import { CONFIG } from './utils/config';
 import React from 'react';
 import CacheCloudinary from './components/cachecloudinary';
@@ -90,6 +91,8 @@ export default async function Page() {
         <Bundle bundleImages={bundleImages} />
 
         <Community />
+
+        <Footer />
       </main>
     </>
   );
