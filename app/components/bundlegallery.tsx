@@ -66,7 +66,7 @@ export default function BundleGallery({
           <CacheCloudinary
             assetUrl={imageUrls[currentIndex]}
             type="image"
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-contain sm:object-cover rounded-lg"
             alt={alt}
             loading="eager"
           />
@@ -76,7 +76,7 @@ export default function BundleGallery({
           <CacheCloudinary
             assetUrl={imageUrls[nextIndex]}
             type="image"
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-contain sm:object-cover rounded-lg"
             alt={alt}
             loading="eager"
           />
