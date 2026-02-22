@@ -98,20 +98,17 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     <section
       ref={sectionRef}
       id="bundle"
-      data-theme="dark"
-      className="bg-[#0e172a] text-white w-full flex flex-col items-center justify-center py-16 sm:py-24 px-4 sm:px-12"
+      className="bg-[#0e172a] text-white w-full flex flex-col items-center justify-center py-24 sm:py-32 px-4 sm:px-12"
     >
       <div className="w-full max-w-7xl">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-12 sm:mb-16 text-left">
+        <h2 className="text-4xl lg:text-7xl font-black mb-12 sm:mb-20 text-left tracking-tighter">
           <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
             Explore the mobile bundle
           </span>
         </h2>
 
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3 sm:grid-rows-3 sm:h-[70vh] sm:max-h-[800px]">
-
           <div className="relative col-span-1 sm:col-start-1 sm:row-start-1 sm:col-span-2 sm:row-span-2 group cursor-pointer">
-
             <div className="absolute inset-0 z-0 pointer-events-none">
               <div className={`absolute top-2 left-12 w-28 h-28 sm:w-36 sm:h-36 transition-all duration-500 ease-out origin-bottom ${activeMole === 0 && isTilted ? '-translate-y-24 rotate-12 scale-100 opacity-100' : 'translate-y-12 rotate-0 scale-75 opacity-0'}`}>
                 <Image src="/Assets/cat.png" alt="Peeking Cat" fill className="object-contain drop-shadow-md" />
@@ -124,36 +121,14 @@ const Bundle = ({ bundleImages }: BundleProps) => {
               </div>
             </div>
 
-            <Link
-              href="/mobilegames"
-              onClick={handleMobileClick}
-              className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-xl shadow-2xl transition-transform duration-500 border border-white/10 z-10 bg-gradient-to-br from-[#0f172a] to-[#0b1220] origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}
-            >
-              <Image
-                src="/Assets/bundle.png"
-                alt="The Unstable Cat Bundle"
-                fill
-                className={`object-cover transition-opacity duration-700 ease-in-out ${(isMobileActive ? 'opacity-0' : 'opacity-100')} sm:group-hover:opacity-0`}
-                priority
-              />
-
+            <Link href="/mobilegames" onClick={handleMobileClick} className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 border border-white/10 z-10 bg-gradient-to-br from-[#0f172a] to-[#0b1220] origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}>
+              <Image src="/Assets/bundle.png" alt="The Unstable Cat Bundle" fill className={`object-cover transition-opacity duration-700 ease-in-out ${(isMobileActive ? 'opacity-0' : 'opacity-100')} sm:group-hover:opacity-0`} priority />
               <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 text-center transition-all duration-500 ${(isMobileActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')} sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0`}>
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 drop-shadow-lg transition-all duration-500 delay-75">
                   <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain" />
                 </div>
-
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white">
-                  Inside the Bundle
-                </h3>
-
-                <p className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-md">
-                  Experience the full collection including
-                  <span className="font-bold text-[#E46362]"> Rocket Fuel</span>,
-                  <span className="font-bold text-[#F9C462]"> Elasticity</span>,
-                  <span className="font-bold text-[#4ECDC4]"> Feed</span>,
-                  <span className="font-bold text-[#6B66FF]"> Link</span>, and
-                  <span className="font-bold text-[#FF85A1]"> Spin Tycoon</span>.
-                </p>
+                <h3 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-white">Inside the Bundle</h3>
+                <p className="text-base sm:text-xl text-gray-300 leading-relaxed max-w-md">Experience the full collection including <span className="font-bold text-[#E46362]">Rocket Fuel</span>, <span className="font-bold text-[#F9C462]">Elasticity</span>, and more.</p>
               </div>
             </Link>
           </div>
@@ -161,26 +136,15 @@ const Bundle = ({ bundleImages }: BundleProps) => {
           {galleryData.map((item, index) => {
             const isCurrentlyAnimating = animatingIndices.includes(index);
             return (
-              <div
-                key={item.folder}
-                className={`relative h-[60vw] sm:h-full ${galleryLayout[index]}`}
-                onMouseEnter={() => handleMouseEnter(index)}
-              >
+              <div key={item.folder} className={`relative h-[60vw] sm:h-full ${galleryLayout[index]}`} onMouseEnter={() => handleMouseEnter(index)}>
                 <div className={`w-full h-full transform-gpu transition-transform duration-300 origin-center ${isCurrentlyAnimating ? 'scale-[1.06]' : 'hover:scale-[1.06]'}`}>
                   <Link href={item.link} className="block w-full h-full">
-                    <BundleGallery
-                      imageUrls={item.images}
-                      alt={`${item.folder} game screenshot`}
-                      className="rounded-lg h-full w-full"
-                      isAllowedToAnimate={isCurrentlyAnimating}
-                      onAnimationComplete={() => handleAnimationComplete(index)}
-                    />
+                    <BundleGallery imageUrls={item.images} alt={`${item.folder} game screenshot`} className="rounded-xl h-full w-full" isAllowedToAnimate={isCurrentlyAnimating} onAnimationComplete={() => handleAnimationComplete(index)} />
                   </Link>
                 </div>
               </div>
             );
           })}
-
         </div>
       </div>
     </section>

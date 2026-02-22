@@ -7,7 +7,7 @@ export default function AboutMe() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section data-theme="light" className="relative bg-white text-[#0f172a] min-h-[80vh] w-full flex flex-col justify-center overflow-hidden z-10">
+    <section data-theme="light" className="relative bg-white text-[#0f172a] min-h-[100vh] w-full flex flex-col justify-center overflow-hidden z-10 py-32 sm:py-48 lg:py-64">
       
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-end">
         <div className="relative w-full h-full max-w-[2500px]">
@@ -22,7 +22,7 @@ export default function AboutMe() {
       </div>
 
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-12 relative z-10 flex justify-start">
-        <div className="w-full max-w-2xl flex flex-col items-start text-left py-24 sm:py-32">
+        <div className="w-full max-w-2xl flex flex-col items-start text-left">
           
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-12 tracking-tight leading-tight text-[#0f172a]">
             Discover my wild dream
