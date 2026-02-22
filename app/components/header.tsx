@@ -1,29 +1,22 @@
+// app/components/header.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 
-interface HeaderProps {
-  startScrolled?: boolean;
-}
-
-const Header = ({ startScrolled = false }: HeaderProps) => {
-  const [isScrolled, setIsScrolled] = useState(startScrolled);
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
-  const pathname = usePathname();
 
   useEffect(() => {
-    if (startScrolled) return;
-
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 50);
       if (scrollY < 100) {
-        setActiveSection('');
+        setActiveSection('home');
       }
     };
 
@@ -51,7 +44,7 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
       window.removeEventListener('scroll', handleScroll);
       sections.forEach((section) => observer.unobserve(section));
     };
-  }, [startScrolled, pathname]);
+  }, []);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -64,7 +57,7 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
     };
   }, [isMobileMenuOpen]);
 
-  const isActive = isScrolled || startScrolled || isHovered || isMobileMenuOpen;
+  const isActive = isScrolled || isHovered || isMobileMenuOpen;
   const headerBaseClasses = 'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out';
   const paddingClasses = isActive ? 'py-4 sm:py-5' : 'py-6 sm:py-10';
   
@@ -75,16 +68,16 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const mobileNavLinks = [
-    { name: 'Home', href: '/', id: '' },
-    { name: 'Bundles', href: '/#bundle', id: 'bundle' },
-    { name: 'PC Games', href: '/pcgames', id: 'pcgames' },
-    { name: 'Mobile Games', href: '/mobilegames', id: 'mobilegames' },
+    { name: 'Home', href: '/#home', id: 'home', color: 'hover:text-[#E46362]' },
+    { name: 'Bundles', href: '/#bundle', id: 'bundle', color: 'hover:text-[#F9C462]' },
+    { name: 'Mobile Games', href: '/#mobilegames', id: 'mobilegames', color: 'hover:text-[#4ECDC4]' },
+    { name: 'PC Games', href: '/#pcgames', id: 'pcgames', color: 'hover:text-[#8B5CF6]' },
   ];
 
-  const isHomeActive = pathname === '/' && activeSection !== 'bundle';
-  const isBundleActive = pathname === '/' && activeSection === 'bundle';
-  const isPcActive = pathname === '/pcgames';
-  const isMobileGamesActive = pathname === '/mobilegames';
+  const isMobileGamesActive = ['mobilegames', 'rocketfuel-section', 'elasticity-section', 'feed-section', 'link-section', 'spintycoon-section'].includes(activeSection);
+  const isPcActive = ['pcgames', 'fixpc-hero', 'fixpc-gallery', 'rightthatsit-hero', 'rightthatsit-gallery'].includes(activeSection);
+  const isBundleActive = activeSection === 'bundle';
+  const isHomeActive = activeSection === 'home' || (!isBundleActive && !isMobileGamesActive && !isPcActive);
 
   return (
     <>
@@ -97,7 +90,7 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
         <div className="absolute inset-0 -bottom-24 bg-transparent pointer-events-auto -z-10 hidden md:block" />
         
         <div className={`container mx-auto px-6 sm:px-12 flex items-center justify-between relative z-20 transition-all duration-500 ease-in-out ${paddingClasses}`}>
-          <Link href="/" className="flex items-center gap-3 sm:gap-5 group" onClick={() => { closeMobileMenu(); setActiveSection(''); }}>
+          <Link href="/#home" className="flex items-center gap-3 sm:gap-5 group" onClick={() => { closeMobileMenu(); setActiveSection('home'); }}>
             <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:-rotate-3 ${isActive ? 'w-12 h-12 sm:w-16 sm:h-16' : 'w-20 h-20 sm:w-28 sm:h-28'}`}>
               <Image
                 src="/Assets/cat.png"
@@ -133,8 +126,8 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
             <ul className="flex items-center space-x-10 text-xl font-medium">
               <li>
                 <Link 
-                  href="/" 
-                  onClick={() => setActiveSection('')}
+                  href="/#home" 
+                  onClick={() => setActiveSection('home')}
                   className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isHomeActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}
                 >
                   Home
@@ -153,18 +146,20 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
               </li>
               <li>
                 <Link 
-                  href="/pcgames" 
-                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isPcActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
-                  PC Games
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isPcActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                  href="/#mobilegames" 
+                  onClick={() => setActiveSection('mobilegames')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isMobileGamesActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
+                  Mobile Games
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isMobileGamesActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/mobilegames" 
-                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isMobileGamesActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
-                  Mobile Games
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isMobileGamesActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                  href="/#pcgames" 
+                  onClick={() => setActiveSection('pcgames')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isPcActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
+                  PC Games
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isPcActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
             </ul>
@@ -177,7 +172,7 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
         style={{ zIndex: 105 }}
       >
         <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
-          <Link href="/" className="flex items-center gap-3" onClick={() => { closeMobileMenu(); setActiveSection(''); }}>
+          <Link href="/#home" className="flex items-center gap-3" onClick={() => { closeMobileMenu(); setActiveSection('home'); }}>
              <div className="relative w-14 h-14">
               <Image
                 src="/Assets/cat.png"

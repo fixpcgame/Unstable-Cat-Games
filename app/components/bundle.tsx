@@ -20,11 +20,11 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   const router = useRouter();
 
   const galleryData = [
-    { folder: 'Rocket Fuel', images: bundleImages[3], link: '/mobilegames#rocketfuel-section' },
-    { folder: 'Elasticity', images: bundleImages[2], link: '/mobilegames#elasticity-section' },
-    { folder: 'Feed', images: bundleImages[1], link: '/mobilegames#feed-section' },
-    { folder: 'Link', images: bundleImages[4], link: '/mobilegames#link-section' },
-    { folder: 'Spin Tycoon', images: bundleImages[0], link: '/mobilegames#spintycoon-section' },
+    { folder: 'Rocket Fuel', images: bundleImages[3], link: '/#rocketfuel-section' },
+    { folder: 'Elasticity', images: bundleImages[2], link: '/#elasticity-section' },
+    { folder: 'Feed', images: bundleImages[1], link: '/#feed-section' },
+    { folder: 'Link', images: bundleImages[4], link: '/#link-section' },
+    { folder: 'Spin Tycoon', images: bundleImages[0], link: '/#spintycoon-section' },
   ];
 
   useEffect(() => {
@@ -98,8 +98,8 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     <section
       ref={sectionRef}
       id="bundle"
-      data-theme="light"
-      className="bg-gray-100 text-gray-900 w-full flex flex-col items-center justify-center py-16 sm:py-24 px-4 sm:px-12"
+      data-theme="dark"
+      className="bg-[#0e172a] text-white w-full flex flex-col items-center justify-center py-16 sm:py-24 px-4 sm:px-12"
     >
       <div className="w-full max-w-7xl">
         <h2 className="text-4xl lg:text-5xl font-bold mb-12 sm:mb-16 text-left">
@@ -127,7 +127,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
             <Link
               href="/mobilegames"
               onClick={handleMobileClick}
-              className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-xl shadow-2xl transition-transform duration-500 border border-gray-200 z-10 bg-gradient-to-br from-white to-gray-50 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}
+              className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-xl shadow-2xl transition-transform duration-500 border border-white/10 z-10 bg-gradient-to-br from-[#0f172a] to-[#0b1220] origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}
             >
               <Image
                 src="/Assets/bundle.png"
@@ -138,15 +138,15 @@ const Bundle = ({ bundleImages }: BundleProps) => {
               />
 
               <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 text-center transition-all duration-500 ${(isMobileActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')} sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0`}>
-                <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 drop-shadow-lg transition-all duration-500 delay-75 scale-100 sm:scale-100">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 drop-shadow-lg transition-all duration-500 delay-75">
                   <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain" />
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-800">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white">
                   Inside the Bundle
                 </h3>
 
-                <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-md">
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-md">
                   Experience the full collection including
                   <span className="font-bold text-[#E46362]"> Rocket Fuel</span>,
                   <span className="font-bold text-[#F9C462]"> Elasticity</span>,
