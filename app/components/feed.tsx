@@ -50,11 +50,8 @@ export default function Feed({ imageUrls }: FeedProps) {
 
   const renderPhoneImages = (offset: number) => {
     const targetIndex = getIndex(offset);
-    const prevTargetIndex = (targetIndex - 1 + imageUrls.length) % imageUrls.length;
 
     return imageUrls.map((url, index) => {
-      if (index !== targetIndex && index !== prevTargetIndex) return null;
-
       const isActive = index === targetIndex;
       return (
         <div
@@ -90,7 +87,7 @@ export default function Feed({ imageUrls }: FeedProps) {
       data-theme="light"
       className="scroll-mt-24 sm:scroll-mt-32 bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
     >
-      <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
+      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
         
         <div 
           className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-8 relative order-2 lg:order-1 z-10"
@@ -120,7 +117,7 @@ export default function Feed({ imageUrls }: FeedProps) {
             </div>
 
             {imageUrls.length > 1 && (
-              <div className="w-full max-w-[400px]">
+              <div className="w-full max-w-[500px]">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gameplay Gallery</p>
                 
                 <div className="relative group/gallery flex items-center mb-4">
@@ -143,7 +140,7 @@ export default function Feed({ imageUrls }: FeedProps) {
                           key={url}
                           ref={isActive ? activeThumbRef : null}
                           onClick={() => setCurrentIndex(idx)}
-                          className={`relative w-16 sm:w-20 aspect-[9/19.5] rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 snap-center ${
+                          className={`relative w-32 sm:w-44 aspect-[19.5/9] rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 snap-center ${
                             isActive
                               ? 'ring-4 ring-[#fdbf00] scale-105 shadow-md z-10 mx-1'
                               : 'opacity-60 hover:opacity-100 hover:scale-105 hover:z-10 bg-gray-200'
@@ -184,14 +181,14 @@ export default function Feed({ imageUrls }: FeedProps) {
         </div>
 
         <div 
-          className="lg:col-span-6 lg:col-start-7 w-full flex justify-center items-center relative order-1 lg:order-2 h-[550px] sm:h-[650px] group cursor-pointer" 
+          className="lg:col-span-7 lg:col-start-6 w-full flex justify-center items-center relative order-1 lg:order-2 h-[500px] sm:h-[650px] group cursor-pointer" 
           style={{ perspective: '1200px' }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#fdbf00] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[75%] sm:w-[80%] h-[90%] sm:h-[100%] bg-[#fdbf00] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
 
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-12 group-hover:scale-110 pointer-events-none drop-shadow-xl">
+          <div className="absolute top-[-25px] left-[30%] -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-8 group-hover:scale-110 pointer-events-none drop-shadow-xl">
             <Image 
               src="/Assets/cat.png" 
               alt="Peeking Cat" 
@@ -201,20 +198,20 @@ export default function Feed({ imageUrls }: FeedProps) {
           </div>
 
           <div className="relative w-full h-full flex justify-center items-center z-20">
-            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 -translate-x-12 -rotate-[10deg] scale-90 group-hover:-translate-x-32 sm:group-hover:-translate-x-40 group-hover:-rotate-[20deg] transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+            <div className="absolute w-[300px] sm:w-[420px] aspect-[19.5/9] rounded-[2.5rem] border-8 border-white shadow-2xl bg-white overflow-hidden z-10 -translate-y-20 -rotate-[12deg] scale-90 group-hover:-translate-y-48 sm:group-hover:-translate-y-56 group-hover:-rotate-[18deg] transition-all duration-500 ease-out">
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-6 sm:w-7 h-24 sm:h-32 bg-white rounded-r-2xl z-30" />
               {renderPhoneImages(1)}
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
             </div>
 
-            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 translate-x-12 rotate-[10deg] scale-90 group-hover:translate-x-32 sm:group-hover:translate-x-40 group-hover:rotate-[20deg] transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+            <div className="absolute w-[300px] sm:w-[420px] aspect-[19.5/9] rounded-[2.5rem] border-8 border-white shadow-2xl bg-white overflow-hidden z-10 translate-y-20 rotate-[12deg] scale-90 group-hover:translate-y-48 sm:group-hover:translate-y-56 group-hover:rotate-[18deg] transition-all duration-500 ease-out">
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-6 sm:w-7 h-24 sm:h-32 bg-white rounded-r-2xl z-30" />
               {renderPhoneImages(2)}
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
             </div>
 
-            <div className="absolute w-[200px] sm:w-[250px] aspect-[9/19.5] rounded-[2rem] sm:rounded-[2.5rem] border-[10px] border-white shadow-[0_30px_60px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-30 group-hover:-translate-y-8 group-hover:scale-105 transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 h-6 sm:h-7 bg-white rounded-b-2xl z-30 shadow-sm" />
+            <div className="absolute w-[350px] sm:w-[500px] aspect-[19.5/9] rounded-[2.5rem] sm:rounded-[3rem] border-[12px] border-white shadow-[0_40px_80px_rgba(0,0,0,0.4)] bg-white overflow-hidden z-30 group-hover:-translate-y-6 group-hover:scale-105 transition-all duration-500 ease-out">
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-7 sm:w-8 h-28 sm:h-36 bg-white rounded-r-2xl z-30 shadow-sm" />
               {renderPhoneImages(0)}
               <div className="absolute -inset-full top-0 z-20 w-[200%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent -rotate-45 pointer-events-none" />
             </div>
