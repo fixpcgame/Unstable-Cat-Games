@@ -102,7 +102,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     >
       <div className="w-full max-w-7xl">
         <h2 className="text-4xl lg:text-7xl font-black mb-12 sm:mb-20 text-left tracking-tighter">
-          <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
+          <span className="inline-block px-2 -ml-2 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
             Explore the mobile bundle
           </span>
         </h2>

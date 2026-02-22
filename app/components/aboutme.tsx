@@ -7,10 +7,10 @@ export default function AboutMe() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section data-theme="light" className="relative bg-[#c8d6f1] text-[#0f172a] min-h-[100vh] w-full flex flex-col justify-center overflow-hidden z-10 py-32 sm:py-48 lg:py-64">
+    <section data-theme="light" className="relative text-[#0f172a] w-full h-[800px] flex flex-col justify-center overflow-hidden z-10">
       
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-end">
-        <div className="relative w-full h-full max-w-[2500px]">
+      <div className="absolute inset-0 z-0 pointer-events-none flex justify-end">
+        <div className="relative w-full h-[100vh] min-h-[1080px] max-w-[2500px] top-1/2 -translate-y-1/2">
           <Image 
             src="/Assets/aboutme.png" 
             alt="About Me Background" 

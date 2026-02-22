@@ -188,8 +188,8 @@ export default async function Page() {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0e172a] via-transparent to-[#0a0a0a]" />
               </div>
               <div className="absolute bottom-10 right-0 w-full p-8 sm:p-16 z-10 text-right flex flex-col items-end">
-                <h1 className="text-6xl sm:text-9xl font-black text-white mb-4 tracking-tighter drop-shadow-2xl">RIGHT THATS IT</h1>
-                <p className="text-xl sm:text-2xl text-white/80 font-medium border-r-8 border-[#F9C462] pr-6 max-w-lg">Precision Platforming with Zero Room for Error.</p>
+                <h1 className="text-6xl sm:text-9xl font-black text-white mb-4 tracking-tighter drop-shadow-2xl">RIGHT THAT'S IT</h1>
+                <p className="text-xl sm:text-2xl text-white/80 font-medium border-r-8 border-[#F9C462] pr-6 max-w-lg">Best Platformer In The Games Module.</p>
               </div>
             </section>
 
