@@ -110,7 +110,9 @@ export default async function Page() {
 
           <div className="max-w-7xl mx-auto px-6 text-center mt-24">
             <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">Mobile</span>
+              <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
+                Mobile
+              </span>
               <span className="text-[#0e172a]"> Games</span>
             </h2>
             
@@ -145,7 +147,9 @@ export default async function Page() {
 
           <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
             <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">PC</span>
+              <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
+                PC
+              </span>
               <span className="text-white"> Games</span>
             </h2>
 

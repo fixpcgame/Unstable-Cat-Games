@@ -128,7 +128,14 @@ const Bundle = ({ bundleImages }: BundleProps) => {
                   <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain" />
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-white">Inside the Bundle</h3>
-                <p className="text-base sm:text-xl text-gray-300 leading-relaxed max-w-md">Experience the full collection including <span className="font-bold text-[#E46362]">Rocket Fuel</span>, <span className="font-bold text-[#F9C462]">Elasticity</span>, and more.</p>
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-md">
+                  Experience the full collection including
+                  <span className="font-bold text-[#E46362]"> Rocket Fuel</span>,
+                  <span className="font-bold text-[#F9C462]"> Elasticity</span>,
+                  <span className="font-bold text-[#4ECDC4]"> Feed</span>,
+                  <span className="font-bold text-[#6B66FF]"> Link</span>, and
+                  <span className="font-bold text-[#FF85A1]"> Spin Tycoon</span>.
+                </p>
               </div>
             </Link>
           </div>
