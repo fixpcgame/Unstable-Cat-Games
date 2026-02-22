@@ -131,10 +131,9 @@ const Bundle = ({ bundleImages }: BundleProps) => {
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-md">
                   Experience the full collection including
                   <span className="font-bold text-[#E46362]"> Rocket Fuel</span>,
-                  <span className="font-bold text-[#F9C462]"> Elasticity</span>,
-                  <span className="font-bold text-[#4ECDC4]"> Feed</span>,
-                  <span className="font-bold text-[#6B66FF]"> Link</span>, and
-                  <span className="font-bold text-[#FF85A1]"> Spin Tycoon</span>.
+                  <span className="font-bold text-[#FF85A1]"> Elasticity</span>,
+                  <span className="font-bold text-[#4ECDC4]"> Link</span> and
+                  <span className="font-bold text-[#F9C462]"> Feed</span>.
                 </p>
               </div>
             </Link>
