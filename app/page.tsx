@@ -74,8 +74,6 @@ export default async function Page() {
 
   return (
     <>
-      <StartupAnimation canPlay={!!videoSrc} />
-
       <main className="bg-[#0a0a0a] scroll-smooth">
         <Header />
 
@@ -92,54 +90,9 @@ export default async function Page() {
 
         <AboutMe />
 
-        <section className="relative bg-[#0e172a]">
-          <Bundle bundleImages={bundleImages} />
-        </section>
+        <Bundle bundleImages={bundleImages} />
 
-        <section id="mobilegames" className="relative bg-white pt-24 pb-12">
-          <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-[#0e172a]">
-              <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
-            </svg>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 text-center mt-24">
-            <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
-              <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
-                Mobile
-              </span>
-              <span className="text-[#0e172a]"> Games</span>
-            </h2>
-            
-            <div className="flex flex-wrap justify-center gap-4 mb-20 relative z-30">
-              {['Rocket Fuel', 'Elasticity', 'Feed', 'Link', 'Spin Tycoon'].map((game) => (
-                <a 
-                  key={game} 
-                  href={`#${game.toLowerCase().replace(' ', '')}`}
-                  className="px-6 py-2 rounded-full border-2 border-[#0e172a] text-[#0e172a] font-black hover:bg-[#0e172a] hover:text-white transition-all duration-300 shadow-sm"
-                >
-                  {game}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-full flex flex-col text-black">
-            <div id="rocketfuel" className="scroll-mt-32"><RocketFuel imageUrls={rocketFuelImages} /></div>
-            <div id="elasticity" className="scroll-mt-32"><Elasticity imageUrls={elasticityImages} /></div>
-            <div id="feed" className="scroll-mt-32"><Feed imageUrls={feedImages} /></div>
-            <div id="link" className="scroll-mt-32"><LinkGame imageUrls={linkImages} /></div>
-            <div id="spintycoon" className="scroll-mt-32"><SpinTycoon imageUrls={spinTycoonImages} /></div>
-          </div>
-        </section>
-
-        <section id="pcgames" className="relative bg-[#0e172a] pt-40 pb-12">
-          <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-white">
-              <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
-            </svg>
-          </div>
-
+        <section id="pcgames" className="relative bg-[#0e172a] pt-24 pb-32">
           <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
             <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
               <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
@@ -151,12 +104,12 @@ export default async function Page() {
             <div className="flex flex-wrap justify-center gap-4">
               {[
                 { name: 'Fix PC', id: 'fixpc-hero' },
-                { name: 'Right Thats It', id: 'rightthatsit-hero' }
+                { name: "Right That's It", id: 'rightthatsit-hero' }
               ].map((game) => (
                 <a 
                   key={game.id} 
                   href={`#${game.id}`}
-                  className="px-10 py-3 rounded-full bg-white text-[#0e172a] font-black uppercase tracking-widest hover:bg-gradient-to-r hover:from-[#E46362] hover:to-[#F9C462] hover:text-white transition-all duration-300 shadow-xl"
+                  className="px-6 py-2 rounded-full border-2 border-white text-white font-black hover:bg-white hover:text-[#0e172a] transition-all duration-300 shadow-sm"
                 >
                   {game.name}
                 </a>
@@ -194,6 +147,45 @@ export default async function Page() {
             </section>
 
             <RightThatsIt imageUrls={rightThatsItImageUrls} />
+          </div>
+        </section>
+
+        <section id="mobilegames" className="relative flex flex-col w-full">
+          <div className="relative bg-[#0e172a] pt-32 pb-32 text-center z-20">
+            <div className="max-w-7xl mx-auto px-6 relative z-30">
+              <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
+                <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
+                  Mobile
+                </span>
+                <span className="text-white"> Games</span>
+              </h2>
+              
+              <div className="flex flex-wrap justify-center gap-4 mb-10">
+                {['Rocket Fuel', 'Elasticity', 'Feed', 'Link', 'Spin Tycoon'].map((game) => (
+                  <a 
+                    key={game} 
+                    href={`#${game.toLowerCase().replace(' ', '')}`}
+                    className="px-6 py-2 rounded-full border-2 border-white text-white font-black hover:bg-white hover:text-[#0e172a] transition-all duration-300 shadow-sm"
+                  >
+                    {game}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full flex flex-col bg-white text-black relative z-10 pt-32 pb-12">
+            <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
+              <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-[#0e172a]">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
+              </svg>
+            </div>
+
+            <div id="rocketfuel" className="scroll-mt-32"><RocketFuel imageUrls={rocketFuelImages} /></div>
+            <div id="elasticity" className="scroll-mt-32"><Elasticity imageUrls={elasticityImages} /></div>
+            <div id="feed" className="scroll-mt-32"><Feed imageUrls={feedImages} /></div>
+            <div id="link" className="scroll-mt-32"><LinkGame imageUrls={linkImages} /></div>
+            <div id="spintycoon" className="scroll-mt-32"><SpinTycoon imageUrls={spinTycoonImages} /></div>
           </div>
         </section>
 

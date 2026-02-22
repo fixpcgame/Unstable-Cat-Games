@@ -81,7 +81,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
         e.preventDefault();
         setIsMobileActive(true);
       } else {
-        router.push('/mobilegames');
+        router.push('/#mobilegames');
       }
     }
   };
@@ -98,14 +98,18 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     <section
       ref={sectionRef}
       id="bundle"
-      className="bg-[#0e172a] text-white w-full flex flex-col items-center justify-center py-24 sm:py-32 px-4 sm:px-12"
+      className="relative bg-white text-gray-900 w-full flex flex-col items-center justify-center pt-24 pb-32 sm:pt-32 sm:pb-48 px-4 sm:px-12 z-10"
     >
-      <div className="w-full max-w-7xl">
-        <h2 className="text-4xl lg:text-7xl font-black mb-12 sm:mb-20 text-left tracking-tighter">
+      <div className="w-full max-w-7xl relative z-30">
+        <h2 className="text-4xl lg:text-7xl font-black mb-6 text-left tracking-tighter">
           <span className="inline-block px-2 -ml-2 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
             Explore the mobile bundle
           </span>
         </h2>
+        
+        <p className="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed mb-12 sm:mb-16 border-l-4 border-[#F9C462] pl-6 max-w-4xl">
+          Elastic chaos, cosmic nonsense and calm, curious puzzles - (an unstable cat in full experimental play! Pack includes: Rocket Fuel, Elasticity, link, feed and spin tycoon)
+        </p>
 
         <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3 sm:grid-rows-3 sm:h-[70vh] sm:max-h-[800px]">
           <div className="relative col-span-1 sm:col-start-1 sm:row-start-1 sm:col-span-2 sm:row-span-2 group cursor-pointer">
@@ -121,14 +125,14 @@ const Bundle = ({ bundleImages }: BundleProps) => {
               </div>
             </div>
 
-            <Link href="/mobilegames" onClick={handleMobileClick} className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 border border-white/10 z-10 bg-gradient-to-br from-[#0f172a] to-[#0b1220] origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}>
+            <Link href="/#mobilegames" onClick={handleMobileClick} className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 border border-black/10 z-10 bg-gradient-to-br from-gray-50 to-gray-200 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}>
               <Image src="/Assets/bundle.png" alt="The Unstable Cat Bundle" fill className={`object-cover transition-opacity duration-700 ease-in-out ${(isMobileActive ? 'opacity-0' : 'opacity-100')} sm:group-hover:opacity-0`} priority />
               <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 text-center transition-all duration-500 ${(isMobileActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')} sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0`}>
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 drop-shadow-lg transition-all duration-500 delay-75">
                   <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-white">Inside the Bundle</h3>
-                <p className="text-base sm:text-lg text-gray-300 leading-relaxed max-w-md">
+                <h3 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-gray-900">Inside the Bundle</h3>
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-md">
                   Experience the full collection including
                   <span className="font-bold text-[#E46362]"> Rocket Fuel</span>,
                   <span className="font-bold text-[#FF85A1]"> Elasticity</span>,
@@ -152,6 +156,12 @@ const Bundle = ({ bundleImages }: BundleProps) => {
             );
           })}
         </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20 rotate-180">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-[#0e172a]">
+          <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
+        </svg>
       </div>
     </section>
   );

@@ -68,15 +68,16 @@ const Header = () => {
 
   const mobileNavLinks = [
     { name: 'Home', href: '/#home', id: 'home', color: 'hover:text-[#E46362]' },
-    { name: 'Bundles', href: '/#bundle', id: 'bundle', color: 'hover:text-[#F9C462]' },
+    { name: 'Fix PC', href: '/#fixpc-hero', id: 'fixpc-hero', color: 'hover:text-[#45a1d4]' },
+    { name: "Right That's It", href: '/#rightthatsit-hero', id: 'rightthatsit-hero', color: 'hover:text-[#F9C462]' },
     { name: 'Mobile Games', href: '/#mobilegames', id: 'mobilegames', color: 'hover:text-[#4ECDC4]' },
-    { name: 'PC Games', href: '/#pcgames', id: 'pcgames', color: 'hover:text-[#8B5CF6]' },
+    { name: 'Contact', href: '#', id: 'contact', color: 'hover:text-[#8B5CF6]' },
   ];
 
+  const isFixPcActive = activeSection === 'fixpc-hero' || activeSection === 'fixpc-gallery';
+  const isRightThatsItActive = activeSection === 'rightthatsit-hero' || activeSection === 'rightthatsit-gallery';
   const isMobileGamesActive = ['mobilegames', 'rocketfuel-section', 'elasticity-section', 'feed-section', 'link-section', 'spintycoon-section'].includes(activeSection);
-  const isPcActive = ['pcgames', 'fixpc-hero', 'fixpc-gallery', 'rightthatsit-hero', 'rightthatsit-gallery'].includes(activeSection);
-  const isBundleActive = activeSection === 'bundle';
-  const isHomeActive = activeSection === 'home' || (!isBundleActive && !isMobileGamesActive && !isPcActive);
+  const isHomeActive = activeSection === 'home' || (!isFixPcActive && !isRightThatsItActive && !isMobileGamesActive && activeSection !== 'contact');
 
   return (
     <>
@@ -122,7 +123,7 @@ const Header = () => {
           </button>
 
           <nav className={`hidden md:block transition-all duration-500 ease-in-out ${!isActive ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100 translate-x-0'}`}>
-            <ul className="flex items-center space-x-10 text-xl font-medium">
+            <ul className="flex items-center space-x-8 text-lg font-medium">
               <li>
                 <Link 
                   href="/#home" 
@@ -135,12 +136,21 @@ const Header = () => {
               </li>
               <li>
                 <Link 
-                  href="/#bundle" 
-                  onClick={() => setActiveSection('bundle')}
-                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isBundleActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}
+                  href="/#fixpc-hero" 
+                  onClick={() => setActiveSection('fixpc-hero')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isFixPcActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}
                 >
-                  Bundles
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isBundleActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                  Fix PC
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isFixPcActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/#rightthatsit-hero" 
+                  onClick={() => setActiveSection('rightthatsit-hero')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isRightThatsItActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
+                  Right That's It
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isRightThatsItActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
               <li>
@@ -153,13 +163,13 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/#pcgames" 
-                  onClick={() => setActiveSection('pcgames')}
-                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isPcActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
-                  PC Games
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isPcActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-                </Link>
+                <a 
+                  href="#" 
+                  onClick={(e) => { e.preventDefault(); setActiveSection('contact'); }}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${activeSection === 'contact' ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
+                  Contact
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${activeSection === 'contact' ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                </a>
               </li>
             </ul>
           </nav>
@@ -204,15 +214,17 @@ const Header = () => {
 
         <nav className="flex-1 flex flex-col items-center justify-center space-y-8 pb-10">
           {mobileNavLinks.map((link, i) => {
-            const isThisLinkActive = link.id === 'bundle' ? isBundleActive : 
-                                     link.id === 'pcgames' ? isPcActive :
-                                     link.id === 'mobilegames' ? isMobileGamesActive : isHomeActive;
+            const isThisLinkActive = link.id === 'fixpc-hero' ? isFixPcActive : 
+                                     link.id === 'rightthatsit-hero' ? isRightThatsItActive :
+                                     link.id === 'mobilegames' ? isMobileGamesActive : 
+                                     link.id === 'contact' ? activeSection === 'contact' : isHomeActive;
             
             return (
-              <Link 
+              <a 
                 key={link.name}
                 href={link.href} 
-                onClick={() => {
+                onClick={(e) => {
+                  if (link.href === '#') e.preventDefault();
                   closeMobileMenu();
                   if (link.id) setActiveSection(link.id);
                 }} 
@@ -222,7 +234,7 @@ const Header = () => {
                 style={{ transitionDelay: `${100 + i * 75}ms` }}
               >
                 {link.name}
-              </Link>
+              </a>
             )
           })}
 
