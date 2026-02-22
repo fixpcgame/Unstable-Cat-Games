@@ -13,45 +13,45 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(startScrolled);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('dark');
+  const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionTheme = entry.target.getAttribute('data-theme');
-            setTheme(sectionTheme || 'dark');
-          }
-        });
-      },
-      { rootMargin: '-100px 0px -85% 0px' }
-    );
-
-    const sections = document.querySelectorAll('[data-theme]');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, []);
 
   useEffect(() => {
     if (startScrolled) return;
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 50);
+      if (scrollY < 100) {
+        setActiveSection('');
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
-    const timeout = setTimeout(handleScroll, 50);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && window.scrollY >= 100) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -40% 0px' }
+    );
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    if (window.location.hash) {
+      setActiveSection(window.location.hash.substring(1));
+    }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timeout);
+      sections.forEach((section) => observer.unobserve(section));
     };
-  }, [startScrolled]);
+  }, [startScrolled, pathname]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -65,26 +65,26 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
   }, [isMobileMenuOpen]);
 
   const isActive = isScrolled || startScrolled || isHovered || isMobileMenuOpen;
-
   const headerBaseClasses = 'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out';
   const paddingClasses = isActive ? 'py-4 sm:py-5' : 'py-6 sm:py-10';
   
-  const themeClasses = theme === 'light' 
-    ? 'bg-white/90 text-gray-900 shadow-[0_10px_30px_rgba(0,0,0,0.1)] border-b border-gray-200/50' 
-    : 'bg-[#0a0a0a]/90 text-white shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-b border-white/10';
-    
-  const backgroundClasses = isActive ? `${themeClasses} backdrop-blur-xl` : 'bg-transparent text-white border-b border-transparent';
+  const backgroundClasses = isActive 
+    ? 'bg-[#E46362]/95 backdrop-blur-xl text-white shadow-[0_10px_30px_rgba(228,99,98,0.25)] border-b border-white/20' 
+    : 'bg-transparent text-white border-b border-transparent';
   
-  const logoFilter = (theme === 'light' && isActive) ? 'invert' : 'invert-0';
-
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const mobileNavLinks = [
-    { name: 'Home', href: '/', color: 'hover:text-[#E46362]' },
-    { name: 'Bundles', href: '/#bundle', color: 'hover:text-[#F9C462]' },
-    { name: 'PC Games', href: '/pcgames', color: 'hover:text-[#8B5CF6]' },
-    { name: 'Mobile Games', href: '/mobilegames', color: 'hover:text-[#4ECDC4]' },
+    { name: 'Home', href: '/', id: '' },
+    { name: 'Bundles', href: '/#bundle', id: 'bundle' },
+    { name: 'PC Games', href: '/pcgames', id: 'pcgames' },
+    { name: 'Mobile Games', href: '/mobilegames', id: 'mobilegames' },
   ];
+
+  const isHomeActive = pathname === '/' && activeSection !== 'bundle';
+  const isBundleActive = pathname === '/' && activeSection === 'bundle';
+  const isPcActive = pathname === '/pcgames';
+  const isMobileGamesActive = pathname === '/mobilegames';
 
   return (
     <>
@@ -97,20 +97,29 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
         <div className="absolute inset-0 -bottom-24 bg-transparent pointer-events-auto -z-10 hidden md:block" />
         
         <div className={`container mx-auto px-6 sm:px-12 flex items-center justify-between relative z-20 transition-all duration-500 ease-in-out ${paddingClasses}`}>
-          <Link href="/" className="flex items-center gap-4 group" onClick={closeMobileMenu}>
+          <Link href="/" className="flex items-center gap-3 sm:gap-5 group" onClick={() => { closeMobileMenu(); setActiveSection(''); }}>
+            <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:-rotate-3 ${isActive ? 'w-12 h-12 sm:w-16 sm:h-16' : 'w-20 h-20 sm:w-28 sm:h-28'}`}>
+              <Image
+                src="/Assets/cat.png"
+                alt="Cat Icon"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
             <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-1 ${isActive ? 'w-32 h-10 sm:w-40 sm:h-12' : 'w-40 h-12 sm:w-56 sm:h-16'}`}>
               <Image
                 src="/logos/logo.png"
                 alt="Unstable Cat Games Logo"
                 fill
-                className={`object-contain transition-all duration-500 ease-in-out ${logoFilter}`}
+                className="object-contain transition-all duration-500 ease-in-out"
                 priority
               />
             </div>
           </Link>
 
           <button 
-            className={`md:hidden p-2 focus:outline-none transition-colors duration-300 text-current ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            className={`md:hidden p-2 focus:outline-none transition-colors duration-300 text-current ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'} ${!isActive ? 'hidden' : ''}`}
             style={{ zIndex: 110 }}
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open mobile menu"
@@ -120,30 +129,42 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
             </svg>
           </button>
 
-          <nav className="hidden md:block transition-all duration-500 ease-in-out">
+          <nav className={`hidden md:block transition-all duration-500 ease-in-out ${!isActive ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100 translate-x-0'}`}>
             <ul className="flex items-center space-x-10 text-xl font-medium">
               <li>
-                <Link href="/" className={`relative transition-all duration-300 hover:text-[#E46362] hover:-translate-y-0.5 inline-block ${pathname === '/' ? 'text-[#E46362]' : ''}`}>
+                <Link 
+                  href="/" 
+                  onClick={() => setActiveSection('')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isHomeActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}
+                >
                   Home
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E46362] transition-all duration-300 group-hover:w-full"></span>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isHomeActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
               <li>
-                <Link href="/#bundle" className="relative transition-all duration-300 hover:text-[#F9C462] hover:-translate-y-0.5 inline-block">
+                <Link 
+                  href="/#bundle" 
+                  onClick={() => setActiveSection('bundle')}
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isBundleActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}
+                >
                   Bundles
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#F9C462] transition-all duration-300 group-hover:w-full"></span>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isBundleActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
               <li>
-                <Link href="/pcgames" className={`relative transition-all duration-300 hover:text-[#8B5CF6] hover:-translate-y-0.5 inline-block ${pathname === '/pcgames' ? 'text-[#8B5CF6]' : ''}`}>
+                <Link 
+                  href="/pcgames" 
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isPcActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
                   PC Games
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#8B5CF6] transition-all duration-300 group-hover:w-full"></span>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isPcActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
               <li>
-                <Link href="/mobilegames" className={`relative transition-all duration-300 hover:text-[#4ECDC4] hover:-translate-y-0.5 inline-block ${pathname === '/mobilegames' ? 'text-[#4ECDC4]' : ''}`}>
+                <Link 
+                  href="/mobilegames" 
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isMobileGamesActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
                   Mobile Games
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#4ECDC4] transition-all duration-300 group-hover:w-full"></span>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isMobileGamesActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               </li>
             </ul>
@@ -152,18 +173,29 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
       </header>
 
       <div 
-        className={`fixed inset-0 bg-[#050505]/98 backdrop-blur-3xl transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col md:hidden ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+        className={`fixed inset-0 bg-[#0a0a0a]/98 backdrop-blur-3xl transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col md:hidden ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
         style={{ zIndex: 105 }}
       >
         <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
-          <Link href="/" className="relative w-36 h-10 transform transition-transform duration-500 hover:scale-105" onClick={closeMobileMenu}>
-            <Image
-              src="/logos/logo.png"
-              alt="Unstable Cat Games Logo"
-              fill
-              className="object-contain invert-0"
-              priority
-            />
+          <Link href="/" className="flex items-center gap-3" onClick={() => { closeMobileMenu(); setActiveSection(''); }}>
+             <div className="relative w-14 h-14">
+              <Image
+                src="/Assets/cat.png"
+                alt="Cat Icon"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="relative w-36 h-10 transform transition-transform duration-500 hover:scale-105">
+              <Image
+                src="/logos/logo.png"
+                alt="Unstable Cat Games Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </Link>
           <button 
             className="p-2 text-white hover:text-[#E46362] transition-transform duration-500 hover:rotate-90 focus:outline-none"
@@ -177,17 +209,28 @@ const Header = ({ startScrolled = false }: HeaderProps) => {
         </div>
 
         <nav className="flex-1 flex flex-col items-center justify-center space-y-8 pb-10">
-          {mobileNavLinks.map((link, i) => (
-            <Link 
-              key={link.name}
-              href={link.href} 
-              onClick={closeMobileMenu} 
-              className={`text-4xl font-black text-white ${link.color} transition-all duration-500 hover:scale-110 tracking-tight transform ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'}`}
-              style={{ transitionDelay: `${100 + i * 75}ms` }}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {mobileNavLinks.map((link, i) => {
+            const isThisLinkActive = link.id === 'bundle' ? isBundleActive : 
+                                     link.id === 'pcgames' ? isPcActive :
+                                     link.id === 'mobilegames' ? isMobileGamesActive : isHomeActive;
+            
+            return (
+              <Link 
+                key={link.name}
+                href={link.href} 
+                onClick={() => {
+                  closeMobileMenu();
+                  if (link.id) setActiveSection(link.id);
+                }} 
+                className={`text-4xl font-black transition-all duration-500 hover:scale-110 tracking-tight transform 
+                  ${isThisLinkActive ? 'text-[#E46362]' : 'text-white/90 hover:text-[#E46362]'}
+                  ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'}`}
+                style={{ transitionDelay: `${100 + i * 75}ms` }}
+              >
+                {link.name}
+              </Link>
+            )
+          })}
 
           <div className={`mt-10 transform transition-all duration-500 ${isMobileMenuOpen ? 'translate-y-0 opacity-100 delay-500' : 'translate-y-16 opacity-0'}`}>
             <a 
