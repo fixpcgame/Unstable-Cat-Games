@@ -161,7 +161,7 @@ export default async function Page() {
               </h2>
               
               <div className="flex flex-wrap justify-center gap-4 mb-10">
-                {['Rocket Fuel', 'Elasticity', 'Feed', 'Link', 'Spin Tycoon'].map((game) => (
+                {['Rocket Fuel', 'Elasticity', 'Link', 'Spin Tycoon', 'Feed'].map((game) => (
                   <a 
                     key={game} 
                     href={`#${game.toLowerCase().replace(' ', '')}`}
@@ -183,9 +183,9 @@ export default async function Page() {
 
             <div id="rocketfuel" className="scroll-mt-32"><RocketFuel imageUrls={rocketFuelImages} /></div>
             <div id="elasticity" className="scroll-mt-32"><Elasticity imageUrls={elasticityImages} /></div>
-            <div id="feed" className="scroll-mt-32"><Feed imageUrls={feedImages} /></div>
             <div id="link" className="scroll-mt-32"><LinkGame imageUrls={linkImages} /></div>
             <div id="spintycoon" className="scroll-mt-32"><SpinTycoon imageUrls={spinTycoonImages} /></div>
+            <div id="feed" className="scroll-mt-32"><Feed imageUrls={feedImages} /></div>
           </div>
         </section>
 
