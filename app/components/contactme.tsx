@@ -163,183 +163,152 @@ export default function ContactMe() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-30 mt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          <div className="text-left space-y-8">
-            <h2 className="text-5xl sm:text-7xl font-black tracking-tighter text-white mb-6">
-              Let's build something <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#45a1d4] to-[#1be88b]">
-                Unstable.
-              </span>
-            </h2>
+        <div className="text-center mb-16">
+          <h2 className="text-5xl sm:text-7xl font-black tracking-tighter text-white mb-6">
+            Let's build something <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#45a1d4] to-[#1be88b]">
+              Unstable.
+            </span>
+          </h2>
+          <p className="text-xl text-gray-400 font-medium max-w-2xl mx-auto">
+            Got an idea, a question, or just want to chat? Drop me a message below.
+          </p>
+        </div>
+
+        <div className="relative max-w-4xl mx-auto">
+          <div className="hidden xl:block pointer-events-none">
+            <div className="absolute -left-64 top-4 w-44 h-44 transition-transform duration-500 hover:rotate-12">
+              <Image src="/Assets/frog.PNG" alt="Frog" fill className="object-contain rotate-[-18deg]" />
+            </div>
+            <div className="absolute -left-56 bottom-4 w-36 h-36 transition-transform duration-500 hover:rotate-[-12deg]">
+              <Image src="/Assets/fixpc.png" alt="Fix PC" fill className="object-contain rotate-[14deg]" />
+            </div>
             
-            <p className="text-xl text-gray-400 font-medium max-w-lg mb-8">
-              Got an idea, a question, or just want to chat about games? Drop me a message and let's connect.
-            </p>
-
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#1e293b] flex items-center justify-center text-[#F9C462] group-hover:bg-[#F9C462] group-hover:text-black transition-colors duration-300">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Name</p>
-                  <p className="text-lg text-white font-medium">Oliver Green</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#1e293b] flex items-center justify-center text-[#E46362] group-hover:bg-[#E46362] group-hover:text-white transition-colors duration-300">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Email</p>
-                  <a href="mailto:oliver.r.green1@gmail.com" className="text-lg text-white font-medium hover:text-[#E46362] transition-colors">oliver.r.green1@gmail.com</a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#1e293b] flex items-center justify-center text-[#45a1d4] group-hover:bg-[#45a1d4] group-hover:text-white transition-colors duration-300">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Phone</p>
-                  <a href="tel:07340110025" className="text-lg text-white font-medium hover:text-[#45a1d4] transition-colors">07340 110025</a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#1e293b] flex items-center justify-center text-[#1be88b] group-hover:bg-[#1be88b] group-hover:text-gray-900 transition-colors duration-300">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Location</p>
-                  <p className="text-lg text-white font-medium">Cambridge, UK</p>
-                </div>
-              </div>
+            <div className="absolute -right-60 top-1/4 w-48 h-48 transition-transform duration-500 hover:scale-110">
+              <Image src="/Assets/rightthatsit.png" alt="That is it" fill className="object-contain rotate-[22deg]" />
+            </div>
+            <div className="absolute -right-52 bottom-12 w-32 h-32 transition-transform duration-500 hover:rotate-[20deg]">
+              <Image src="/Assets/boost.png" alt="Boost" fill className="object-contain rotate-[-15deg]" />
             </div>
           </div>
 
-          <div className="relative mt-16 sm:mt-0">
-            {/* CAT MOVED OUTSIDE OVERFLOW-HIDDEN CONTAINER */}
-            <div className={`absolute -top-20 -right-6 sm:right-6 w-32 h-32 z-[60] pointer-events-none transition-all duration-300
-              ${status === 'idle' ? 'cat-idle' : ''}
-              ${status === 'submitting' ? 'cat-submitting' : ''}
-              ${status === 'success' ? 'cat-success' : ''}
-              ${status === 'error' ? 'cat-error' : ''}
-              ${status === 'rate-limited' ? 'cat-rate-limited' : ''}
-            `}>
-              <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain drop-shadow-2xl" />
-            </div>
+          <div className={`absolute -top-16 -right-4 sm:-right-12 w-32 h-32 z-[60] pointer-events-none transition-all duration-300
+            ${status === 'idle' ? 'cat-idle' : ''}
+            ${status === 'submitting' ? 'cat-submitting' : ''}
+            ${status === 'success' ? 'cat-success' : ''}
+            ${status === 'error' ? 'cat-error' : ''}
+            ${status === 'rate-limited' ? 'cat-rate-limited' : ''}
+          `}>
+            <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain drop-shadow-2xl" />
+          </div>
 
-            <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-              {status === 'success' && (
-                <div className="absolute inset-0 z-50 bg-white/95 flex flex-col items-center justify-center animate-in fade-in duration-300">
-                  <div className="w-20 h-20 bg-[#1be88b] rounded-full flex items-center justify-center mb-4 scale-in shadow-lg">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-3xl font-black text-gray-900">Message Sent!</h3>
-                  <p className="text-gray-500 font-bold mt-2">I'll get back to you soon.</p>
+          <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden text-left">
+            {status === 'success' && (
+              <div className="absolute inset-0 z-50 bg-white/95 flex flex-col items-center justify-center animate-in fade-in duration-300">
+                <div className="w-20 h-20 bg-[#1be88b] rounded-full flex items-center justify-center mb-4 scale-in shadow-lg">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-3xl font-black text-gray-900">Message Sent!</h3>
+                <p className="text-gray-500 font-bold mt-2">I'll get back to you soon.</p>
+              </div>
+            )}
+
+            <h3 className="text-3xl font-black text-gray-900 mb-8">Send a Message</h3>
+            
+            <form onSubmit={handleSubmit} noValidate className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="firstName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.firstName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
+                    placeholder="Jesal"
+                  />
+                  {errors.firstName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.firstName}</p>}
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="lastName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Last Name</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.lastName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
+                    placeholder="Vee"
+                  />
+                  {errors.lastName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.lastName}</p>}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.email ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#E46362] focus:bg-white transition-all font-medium text-gray-900`}
+                  placeholder="example@gmail.com"
+                />
+                {errors.email && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.email}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Number <span className="text-gray-400 font-normal normal-case">(optional)</span></label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#F9C462] focus:bg-white transition-all font-medium text-gray-900"
+                  placeholder="+44 7941 344450"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="description" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows={4}
+                  value={formData.description}
+                  onChange={handleChange}
+                  className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.description ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#1be88b] focus:bg-white transition-all font-medium text-gray-900 resize-none`}
+                  placeholder="Tell me about your project..."
+                ></textarea>
+                {errors.description && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.description}</p>}
+              </div>
+
+              <button
+                type="submit"
+                disabled={status === 'submitting' || isCooldownActive}
+                className="w-full py-4 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-white font-black text-lg rounded-xl shadow-lg hover:shadow-[0_10px_30px_rgba(228,99,98,0.4)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {status === 'submitting' ? 'Sending...' : 
+                 isCooldownActive ? 'Wait 3 min for another message' : 'Send Message'}
+              </button>
+
+              {status === 'rate-limited' && (
+                <div className="bg-gray-100 text-gray-600 border border-gray-300 rounded-lg p-4 font-bold text-center mt-4">
+                  Slow down! Please wait 3 minutes before sending another.
                 </div>
               )}
 
-              <h3 className="text-3xl font-black text-gray-900 mb-8">Send a Message</h3>
-              
-              <form onSubmit={handleSubmit} noValidate className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="firstName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">First Name</label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.firstName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                      placeholder="Jesal"
-                    />
-                    {errors.firstName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.firstName}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="lastName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Last Name</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.lastName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                      placeholder="Vee"
-                    />
-                    {errors.lastName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.lastName}</p>}
-                  </div>
+              {status === 'error' && Object.keys(errors).length === 0 && (
+                <div className="bg-[#E46362]/10 text-[#c74c4b] border border-[#E46362]/30 rounded-lg p-4 font-bold text-center mt-4">
+                  Oops! Server got unstable. Please try again later.
                 </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.email ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#E46362] focus:bg-white transition-all font-medium text-gray-900`}
-                    placeholder="jesalvadgama@gmail.com"
-                  />
-                  {errors.email && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.email}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Number <span className="text-gray-400 font-normal normal-case">(optional)</span></label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#F9C462] focus:bg-white transition-all font-medium text-gray-900"
-                    placeholder="+44 7941 344450"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="description" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows={4}
-                    value={formData.description}
-                    onChange={handleChange}
-                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.description ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#1be88b] focus:bg-white transition-all font-medium text-gray-900 resize-none`}
-                    placeholder="Tell me about your project..."
-                  ></textarea>
-                  {errors.description && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.description}</p>}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={status === 'submitting' || isCooldownActive}
-                  className="w-full py-4 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-white font-black text-lg rounded-xl shadow-lg hover:shadow-[0_10px_30px_rgba(228,99,98,0.4)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {status === 'submitting' ? 'Sending...' : 
-                   isCooldownActive ? 'Wait 3 min for another message' : 'Send Message'}
-                </button>
-
-                {status === 'rate-limited' && (
-                  <div className="bg-gray-100 text-gray-600 border border-gray-300 rounded-lg p-4 font-bold text-center mt-4">
-                    Slow down! Please wait 3 minutes before sending another.
-                  </div>
-                )}
-
-                {status === 'error' && Object.keys(errors).length === 0 && (
-                  <div className="bg-[#E46362]/10 text-[#c74c4b] border border-[#E46362]/30 rounded-lg p-4 font-bold text-center mt-4">
-                    Oops! Server got unstable. Please try again or email me directly.
-                  </div>
-                )}
-              </form>
-            </div>
+              )}
+            </form>
           </div>
         </div>
       </div>
