@@ -210,8 +210,8 @@ export default function ContactMe() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-3xl font-black text-gray-900">Message Sent!</h3>
-                <p className="text-gray-500 font-bold mt-2">I'll get back to you soon.</p>
+                <h3 className="text-3xl font-black text-gray-900">Thanks for reaching out!</h3>
+                <p className="text-gray-500 font-bold mt-2">Don't have a good day, have a great day.</p>
               </div>
             )}
 
