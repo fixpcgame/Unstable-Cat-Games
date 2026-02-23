@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +21,7 @@ const Header = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -57,8 +59,10 @@ const Header = () => {
   }, [isMobileMenuOpen]);
 
   const isActive = isScrolled || isHovered || isMobileMenuOpen;
-  const headerBaseClasses = 'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out';
-  const paddingClasses = isActive ? 'py-4 sm:py-5' : 'py-6 sm:py-10';
+  const isContactPage = pathname === '/contactme';
+
+  const headerBaseClasses = 'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] transform-gpu';
+  const paddingClasses = isActive ? 'py-3 sm:py-4' : 'py-2 sm:py-3';
   
   const backgroundClasses = isActive 
     ? 'bg-[#E46362]/95 backdrop-blur-xl text-white shadow-[0_10px_30px_rgba(228,99,98,0.25)] border-b border-white/20' 
@@ -67,29 +71,34 @@ const Header = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const mobileNavLinks = [
-    { name: 'Home', href: '/#home', id: 'home', color: 'hover:text-[#E46362]' },
-    { name: 'Fix PC', href: '/#fixpc-hero', id: 'fixpc-hero', color: 'hover:text-[#45a1d4]' },
-    { name: "Right That's It", href: '/#rightthatsit-hero', id: 'rightthatsit-hero', color: 'hover:text-[#F9C462]' },
-    { name: 'Mobile Games', href: '/#mobilegames', id: 'mobilegames', color: 'hover:text-[#4ECDC4]' },
-    { name: 'Contact', href: '#', id: 'contact', color: 'hover:text-[#8B5CF6]' },
+    { name: 'Home', href: '/#home', id: 'home' },
+    { name: 'Fix PC', href: '/#fixpc-hero', id: 'fixpc-hero' },
+    { name: "Right That's It", href: '/#rightthatsit-hero', id: 'rightthatsit-hero' },
+    { name: 'Mobile Games', href: '/#mobilegames', id: 'mobilegames' },
+    { name: 'Contact', href: '/contactme', id: 'contact' },
   ];
 
   const isFixPcActive = activeSection === 'fixpc-hero' || activeSection === 'fixpc-gallery';
   const isRightThatsItActive = activeSection === 'rightthatsit-hero' || activeSection === 'rightthatsit-gallery';
   const isMobileGamesActive = ['mobilegames', 'rocketfuel-section', 'elasticity-section', 'feed-section', 'link-section', 'spintycoon-section'].includes(activeSection);
-  const isHomeActive = activeSection === 'home' || (!isFixPcActive && !isRightThatsItActive && !isMobileGamesActive && activeSection !== 'contact');
+  const isHomeActive = activeSection === 'home' || (!isFixPcActive && !isRightThatsItActive && !isMobileGamesActive && !isContactPage);
+
+  const getLogoFilter = () => {
+    if (isContactPage && !isActive) return 'brightness(0)';
+    return 'none';
+  };
 
   return (
     <>
       <header 
         className={`${headerBaseClasses} ${backgroundClasses}`}
-        style={{ zIndex: 100 }}
+        style={{ zIndex: 100, backfaceVisibility: 'hidden' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="absolute inset-0 -bottom-24 bg-transparent pointer-events-auto -z-10 hidden md:block" />
         
-        <div className={`container mx-auto px-6 sm:px-12 flex items-center justify-between relative z-20 transition-all duration-500 ease-in-out ${paddingClasses}`}>
+        <div className={`w-full px-6 sm:px-12 flex items-center justify-between relative z-20 transition-all duration-500 ease-in-out ${paddingClasses}`}>
           <Link href="/#home" className="flex items-center gap-3 sm:gap-5 group" onClick={() => { closeMobileMenu(); setActiveSection('home'); }}>
             <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:-rotate-3 ${isActive ? 'w-12 h-12 sm:w-16 sm:h-16' : 'w-20 h-20 sm:w-28 sm:h-28'}`}>
               <Image
@@ -100,7 +109,14 @@ const Header = () => {
                 priority
               />
             </div>
-            <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-1 ${isActive ? 'w-32 h-10 sm:w-40 sm:h-12' : 'w-40 h-12 sm:w-56 sm:h-16'}`}>
+            <div 
+              className={`relative transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-1 ${isActive ? 'w-32 h-10 sm:w-40 sm:h-12' : 'w-40 h-12 sm:w-56 sm:h-16'}`}
+              style={{ 
+                filter: getLogoFilter(),
+                transition: 'filter 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out',
+                transform: 'translateZ(0)'
+              }}
+            >
               <Image
                 src="/logos/logo.png"
                 alt="Unstable Cat Games Logo"
@@ -163,13 +179,12 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => { e.preventDefault(); setActiveSection('contact'); }}
-                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${activeSection === 'contact' ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
+                <Link 
+                  href="/contactme" 
+                  className={`relative transition-all duration-300 hover:-translate-y-0.5 inline-block group ${isContactPage ? 'text-white font-semibold' : 'text-white/80 hover:text-white'}`}>
                   Contact
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${activeSection === 'contact' ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-                </a>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${isContactPage ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -214,17 +229,16 @@ const Header = () => {
 
         <nav className="flex-1 flex flex-col items-center justify-center space-y-8 pb-10">
           {mobileNavLinks.map((link, i) => {
-            const isThisLinkActive = link.id === 'fixpc-hero' ? isFixPcActive : 
+            const isThisLinkActive = link.id === 'contact' ? isContactPage :
+                                     link.id === 'fixpc-hero' ? isFixPcActive : 
                                      link.id === 'rightthatsit-hero' ? isRightThatsItActive :
-                                     link.id === 'mobilegames' ? isMobileGamesActive : 
-                                     link.id === 'contact' ? activeSection === 'contact' : isHomeActive;
+                                     link.id === 'mobilegames' ? isMobileGamesActive : isHomeActive;
             
             return (
-              <a 
+              <Link 
                 key={link.name}
                 href={link.href} 
-                onClick={(e) => {
-                  if (link.href === '#') e.preventDefault();
+                onClick={() => {
                   closeMobileMenu();
                   if (link.id) setActiveSection(link.id);
                 }} 
@@ -234,24 +248,9 @@ const Header = () => {
                 style={{ transitionDelay: `${100 + i * 75}ms` }}
               >
                 {link.name}
-              </a>
+              </Link>
             )
           })}
-
-          <div className={`mt-10 transform transition-all duration-500 ${isMobileMenuOpen ? 'translate-y-0 opacity-100 delay-500' : 'translate-y-16 opacity-0'}`}>
-            <a 
-              href="https://discord.gg/XwgbrfYd" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={closeMobileMenu}
-              className="group relative px-8 py-4 bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold rounded-full transition-all duration-300 shadow-[0_10px_30px_rgba(88,101,242,0.3)] hover:shadow-[0_15px_40px_rgba(88,101,242,0.5)] flex items-center gap-3 text-lg"
-            >
-              <svg className="w-6 h-6 fill-current transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" viewBox="0 0 127.14 96.36">
-                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.1,46,96,53,91.08,65.69,84.69,65.69Z"/>
-              </svg>
-              Join Discord
-            </a>
-          </div>
         </nav>
       </div>
     </>
