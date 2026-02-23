@@ -88,7 +88,9 @@ export default async function Page() {
           </div>
         </section>
 
-        <AboutMe />
+        <div className="hidden md:block">
+          <AboutMe />
+        </div>
 
         <Bundle bundleImages={bundleImages} />
 
