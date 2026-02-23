@@ -1,8 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { CONFIG } from '../utils/config';
+
+const COOLDOWN_PERIOD = 180000;
+const STORAGE_KEY = 'last_form_submission';
 
 export default function ContactMe() {
   const [formData, setFormData] = useState({
@@ -20,7 +23,20 @@ export default function ContactMe() {
     description: ''
   });
 
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error' | 'rate-limited'>('idle');
+  const [isCooldownActive, setIsCooldownActive] = useState(false);
+
+  useEffect(() => {
+    const lastSub = localStorage.getItem(STORAGE_KEY);
+    if (lastSub) {
+      const timePassed = Date.now() - parseInt(lastSub);
+      if (timePassed < COOLDOWN_PERIOD) {
+        setIsCooldownActive(true);
+        const timer = setTimeout(() => setIsCooldownActive(false), COOLDOWN_PERIOD - timePassed);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,6 +47,13 @@ export default function ContactMe() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const lastSub = localStorage.getItem(STORAGE_KEY);
+    if (lastSub && Date.now() - parseInt(lastSub) < COOLDOWN_PERIOD) {
+      setStatus('rate-limited');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
     
     const newErrors = {
       firstName: '',
@@ -48,13 +71,17 @@ export default function ContactMe() {
       newErrors.lastName = "Last name is required too!";
       hasError = true;
     }
+    
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    
     if (!formData.email.trim()) {
       newErrors.email = "I need your email to reply!";
       hasError = true;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = "That doesn't look like a valid email...";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "That email format looks a bit unstable...";
       hasError = true;
     }
+
     if (!formData.description.trim()) {
       newErrors.description = "Don't leave me hanging, write a message!";
       hasError = true;
@@ -83,10 +110,17 @@ export default function ContactMe() {
         body: JSON.stringify(formData),
       });
       
+      localStorage.setItem(STORAGE_KEY, Date.now().toString());
+      setIsCooldownActive(true);
       setStatus('success');
       setFormData({ firstName: '', lastName: '', email: '', phone: '', description: '' });
       
-      setTimeout(() => setStatus('idle'), 5000);
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+
+      setTimeout(() => setIsCooldownActive(false), COOLDOWN_PERIOD);
+      
     } catch (error) {
       console.error(error);
       setStatus('error');
@@ -119,6 +153,7 @@ export default function ContactMe() {
         .cat-submitting { animation: spin-cat 0.5s linear infinite; }
         .cat-success { animation: happy-bounce 0.5s ease-in-out infinite; }
         .cat-error { animation: sad-shake 0.4s ease-in-out infinite; }
+        .cat-rate-limited { filter: grayscale(1); animation: sad-shake 1s infinite; }
       `}} />
 
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
@@ -185,110 +220,127 @@ export default function ContactMe() {
             </div>
           </div>
 
-          <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl relative mt-16 sm:mt-0">
-            <div className={`absolute -top-20 -right-6 sm:right-6 w-32 h-32 z-20 pointer-events-none transition-all duration-300
+          <div className="relative mt-16 sm:mt-0">
+            {/* CAT MOVED OUTSIDE OVERFLOW-HIDDEN CONTAINER */}
+            <div className={`absolute -top-20 -right-6 sm:right-6 w-32 h-32 z-[60] pointer-events-none transition-all duration-300
               ${status === 'idle' ? 'cat-idle' : ''}
               ${status === 'submitting' ? 'cat-submitting' : ''}
               ${status === 'success' ? 'cat-success' : ''}
               ${status === 'error' ? 'cat-error' : ''}
+              ${status === 'rate-limited' ? 'cat-rate-limited' : ''}
             `}>
               <Image src="/Assets/cat.png" alt="Unstable Cat" fill className="object-contain drop-shadow-2xl" />
             </div>
 
-            <h3 className="text-3xl font-black text-gray-900 mb-8">Send a Message</h3>
-            
-            <form onSubmit={handleSubmit} noValidate className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="firstName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">First Name</label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.firstName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                    placeholder="Jesal"
-                  />
-                  {errors.firstName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.firstName}</p>}
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="lastName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Last Name</label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.lastName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                    placeholder="Vee"
-                  />
-                  {errors.lastName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.lastName}</p>}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.email ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#E46362] focus:bg-white transition-all font-medium text-gray-900`}
-                  placeholder="jesalvadgama@gmail.com"
-                />
-                {errors.email && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.email}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="phone" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Number <span className="text-gray-400 font-normal normal-case">(optional)</span></label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#F9C462] focus:bg-white transition-all font-medium text-gray-900"
-                  placeholder="+44 7941 344450"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="description" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Description</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  rows={4}
-                  value={formData.description}
-                  onChange={handleChange}
-                  className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.description ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#1be88b] focus:bg-white transition-all font-medium text-gray-900 resize-none`}
-                  placeholder="Tell me about your project..."
-                ></textarea>
-                {errors.description && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.description}</p>}
-              </div>
-
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="w-full py-4 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-white font-black text-lg rounded-xl shadow-lg hover:shadow-[0_10px_30px_rgba(228,99,98,0.4)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                {status === 'submitting' ? 'Sending...' : 'Send Message'}
-              </button>
-
+            <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
               {status === 'success' && (
-                <div className="bg-[#1be88b]/10 text-[#12a160] border border-[#1be88b]/30 rounded-lg p-4 font-bold text-center mt-4">
-                  Awesome! Message sent successfully. I'll be in touch soon.
+                <div className="absolute inset-0 z-50 bg-white/95 flex flex-col items-center justify-center animate-in fade-in duration-300">
+                  <div className="w-20 h-20 bg-[#1be88b] rounded-full flex items-center justify-center mb-4 scale-in shadow-lg">
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-3xl font-black text-gray-900">Message Sent!</h3>
+                  <p className="text-gray-500 font-bold mt-2">I'll get back to you soon.</p>
                 </div>
               )}
-              {status === 'error' && Object.keys(errors).length === 0 && (
-                <div className="bg-[#E46362]/10 text-[#c74c4b] border border-[#E46362]/30 rounded-lg p-4 font-bold text-center mt-4">
-                  Oops! Server got unstable. Please try again or email me directly.
-                </div>
-              )}
-            </form>
-          </div>
 
+              <h3 className="text-3xl font-black text-gray-900 mb-8">Send a Message</h3>
+              
+              <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="firstName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">First Name</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.firstName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
+                      placeholder="Jesal"
+                    />
+                    {errors.firstName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.firstName}</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="lastName" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Last Name</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.lastName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
+                      placeholder="Vee"
+                    />
+                    {errors.lastName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.lastName}</p>}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.email ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#E46362] focus:bg-white transition-all font-medium text-gray-900`}
+                    placeholder="jesalvadgama@gmail.com"
+                  />
+                  {errors.email && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Number <span className="text-gray-400 font-normal normal-case">(optional)</span></label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#F9C462] focus:bg-white transition-all font-medium text-gray-900"
+                    placeholder="+44 7941 344450"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="description" className="text-sm font-bold text-gray-600 uppercase tracking-wide">Description</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows={4}
+                    value={formData.description}
+                    onChange={handleChange}
+                    className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.description ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#1be88b] focus:bg-white transition-all font-medium text-gray-900 resize-none`}
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                  {errors.description && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.description}</p>}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={status === 'submitting' || isCooldownActive}
+                  className="w-full py-4 bg-gradient-to-r from-[#E46362] to-[#F9C462] text-white font-black text-lg rounded-xl shadow-lg hover:shadow-[0_10px_30px_rgba(228,99,98,0.4)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  {status === 'submitting' ? 'Sending...' : 
+                   isCooldownActive ? 'Wait 3 min for another message' : 'Send Message'}
+                </button>
+
+                {status === 'rate-limited' && (
+                  <div className="bg-gray-100 text-gray-600 border border-gray-300 rounded-lg p-4 font-bold text-center mt-4">
+                    Slow down! Please wait 3 minutes before sending another.
+                  </div>
+                )}
+
+                {status === 'error' && Object.keys(errors).length === 0 && (
+                  <div className="bg-[#E46362]/10 text-[#c74c4b] border border-[#E46362]/30 rounded-lg p-4 font-bold text-center mt-4">
+                    Oops! Server got unstable. Please try again or email me directly.
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </section>
