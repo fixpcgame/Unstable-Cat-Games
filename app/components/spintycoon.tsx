@@ -93,7 +93,45 @@ export default function SpinTycoon({ imageUrls }: SpinTycoonProps) {
       <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative">
         
         <div 
-          className="lg:col-span-5 w-full flex flex-col justify-center text-left space-y-8 relative order-2 lg:order-1 z-10"
+          className="lg:col-span-6 w-full flex justify-center items-center relative order-1 lg:order-1 h-[550px] sm:h-[650px] group cursor-pointer" 
+          style={{ perspective: '1200px' }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#45a1d4] rounded-[3rem] sm:rounded-[4rem] -rotate-6 group-hover:-rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
+
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-12 group-hover:scale-110 pointer-events-none drop-shadow-xl">
+            <Image 
+              src="/Assets/cat.png" 
+              alt="Peeking Cat" 
+              fill 
+              className="object-contain" 
+            />
+          </div>
+
+          <div className="relative w-full h-full flex justify-center items-center z-20">
+            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 -translate-x-12 -rotate-[10deg] scale-90 group-hover:-translate-x-32 sm:group-hover:-translate-x-40 group-hover:-rotate-[20deg] transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+              {renderPhoneImages(1)}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
+            </div>
+
+            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 translate-x-12 rotate-[10deg] scale-90 group-hover:translate-x-32 sm:group-hover:translate-x-40 group-hover:rotate-[20deg] transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
+              {renderPhoneImages(2)}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
+            </div>
+
+            <div className="absolute w-[200px] sm:w-[250px] aspect-[9/19.5] rounded-[2rem] sm:rounded-[2.5rem] border-[10px] border-white shadow-[0_30px_60px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-30 group-hover:-translate-y-8 group-hover:scale-105 transition-all duration-500 ease-out">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 h-6 sm:h-7 bg-white rounded-b-2xl z-30 shadow-sm" />
+              {renderPhoneImages(0)}
+              <div className="absolute -inset-full top-0 z-20 w-[200%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent -rotate-45 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+
+        <div 
+          className="lg:col-span-5 lg:col-start-8 w-full flex flex-col justify-center text-left space-y-8 relative order-2 lg:order-2 z-10"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -181,44 +219,6 @@ export default function SpinTycoon({ imageUrls }: SpinTycoonProps) {
                 )}
               </div>
             )}
-          </div>
-        </div>
-
-        <div 
-          className="lg:col-span-6 lg:col-start-7 w-full flex justify-center items-center relative order-1 lg:order-2 h-[550px] sm:h-[650px] group cursor-pointer" 
-          style={{ perspective: '1200px' }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] sm:w-[110%] h-[80%] sm:h-[90%] bg-[#45a1d4] rounded-[3rem] sm:rounded-[4rem] rotate-6 group-hover:rotate-12 group-hover:scale-105 transition-all duration-700 ease-out z-0 shadow-2xl"></div>
-
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 z-40 transition-all duration-500 group-hover:-translate-y-12 group-hover:scale-110 pointer-events-none drop-shadow-xl">
-            <Image 
-              src="/Assets/cat.png" 
-              alt="Peeking Cat" 
-              fill 
-              className="object-contain" 
-            />
-          </div>
-
-          <div className="relative w-full h-full flex justify-center items-center z-20">
-            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 -translate-x-12 -rotate-[10deg] scale-90 group-hover:-translate-x-32 sm:group-hover:-translate-x-40 group-hover:-rotate-[20deg] transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
-              {renderPhoneImages(1)}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
-            </div>
-
-            <div className="absolute w-[180px] sm:w-[220px] aspect-[9/19.5] rounded-[2rem] border-8 border-white shadow-2xl bg-gray-100 overflow-hidden z-10 translate-x-12 rotate-[10deg] scale-90 group-hover:translate-x-32 sm:group-hover:translate-x-40 group-hover:rotate-[20deg] transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-5 sm:h-6 bg-white rounded-b-2xl z-30" />
-              {renderPhoneImages(2)}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-20 pointer-events-none" />
-            </div>
-
-            <div className="absolute w-[200px] sm:w-[250px] aspect-[9/19.5] rounded-[2rem] sm:rounded-[2.5rem] border-[10px] border-white shadow-[0_30px_60px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-30 group-hover:-translate-y-8 group-hover:scale-105 transition-all duration-500 ease-out">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 h-6 sm:h-7 bg-white rounded-b-2xl z-30 shadow-sm" />
-              {renderPhoneImages(0)}
-              <div className="absolute -inset-full top-0 z-20 w-[200%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent -rotate-45 pointer-events-none" />
-            </div>
           </div>
         </div>
 
