@@ -159,6 +159,10 @@ export default async function Page() {
                 </span>
                 <span className="text-white"> Games</span>
               </h2>
+
+              <p className="text-xl text-white/80 font-medium leading-relaxed border-l-4 border-[#E46362] pl-6 max-w-xl mx-auto text-left mb-8">
+                Don't deep it - Vibe with casual games by The Unstable Cat.
+              </p>
               
               <div className="flex flex-wrap justify-center gap-4 mb-10">
                 {['Rocket Fuel', 'Elasticity', 'Link', 'Spin Tycoon', 'Feed'].map((game) => (
