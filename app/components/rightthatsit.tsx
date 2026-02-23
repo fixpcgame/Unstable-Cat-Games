@@ -120,7 +120,7 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
     <section
       id="rightthatsit-gallery"
       data-theme="light"
-      className="scroll-mt-24 sm:scroll-mt-32 bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10"
+      className="scroll-mt-24 sm:scroll-mt-32 bg-white text-gray-900 w-full flex flex-col items-center justify-center py-24 px-4 sm:px-12 relative z-10 overflow-hidden"
     >
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -142,7 +142,7 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="absolute top-0 left-10 w-32 h-32 z-0 pointer-events-none">
+          <div className="absolute top-0 left-0 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 z-0 pointer-events-none">
             <div className="w-full h-full animate-peek-cat-rti">
               <Image 
                 src="/Assets/cat.png" 
@@ -164,7 +164,7 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="absolute -top-16 left-64 w-36 h-36 opacity-80 -rotate-12 hover:-rotate-6 hover:scale-110 transition-all duration-500 z-0 pointer-events-none">
+          <div className="absolute -top-16 left-[80%] sm:left-64 -translate-x-1/2 sm:translate-x-0 w-36 h-36 opacity-80 -rotate-12 hover:-rotate-6 hover:scale-110 transition-all duration-500 z-0 pointer-events-none">
             <Image 
               src="/Assets/rightthatsit.png" 
               alt="Right Thats It Sticker" 

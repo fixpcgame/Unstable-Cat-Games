@@ -74,10 +74,10 @@ export default async function Page() {
 
   return (
     <>
-      <main className="bg-[#0a0a0a] scroll-smooth">
+      <main className="bg-[#0a0a0a] scroll-smooth overflow-x-hidden">
         <Header />
 
-        <section id="home" className="relative h-screen w-full">
+        <section id="home" className="relative h-screen w-full overflow-hidden">
           <div className="absolute inset-0 z-0">
             {videoSrc ? (
               <CacheCloudinary assetUrl={videoSrc} type="video" className="w-full h-full object-cover" />
@@ -92,7 +92,7 @@ export default async function Page() {
 
         <Bundle bundleImages={bundleImages} />
 
-        <section id="pcgames" className="relative bg-[#0e172a] pt-24 pb-32">
+        <section id="pcgames" className="relative bg-[#0e172a] pt-24 pb-32 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
             <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
               <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
@@ -150,8 +150,8 @@ export default async function Page() {
           </div>
         </section>
 
-        <section id="mobilegames" className="relative flex flex-col w-full">
-          <div className="relative bg-[#0e172a] pt-32 pb-32 text-center z-20">
+        <section id="mobilegames" className="relative flex flex-col w-full overflow-hidden">
+          <div className="relative bg-[#0e172a] pt-32 pb-32 text-center z-20 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 relative z-30">
               <h2 className="text-6xl sm:text-8xl font-black tracking-tighter mb-10">
                 <span className="inline-block px-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E46362] to-[#F9C462]">
@@ -178,7 +178,7 @@ export default async function Page() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col bg-white text-black relative z-10 pt-32 pb-12">
+          <div className="w-full flex flex-col bg-white text-black relative z-10 pt-32 pb-12 overflow-hidden">
             <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
               <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-[#0e172a]">
                 <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
