@@ -25,7 +25,7 @@ export default function Community() {
           </h2>
           
           <p className="text-sm sm:text-lg lg:text-xl text-gray-300 font-medium max-w-2xl mx-auto mb-6 sm:mb-8 drop-shadow-md">
-            Connect with players, share strategies, and chat directly with the creators. Don't miss out on the chaos.
+            Connect with players, contribute ideas and chat directly with the creators. Don't miss out on the chaos.
           </p>
 
           <a 

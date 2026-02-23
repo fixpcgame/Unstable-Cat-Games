@@ -164,7 +164,7 @@ export default function FixPC({ imageUrls }: FixPCProps) {
             </h2>
             
             <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-cyan-500 pl-6">
-              This is the big one! A ground-up VR puzzle game designed to test your limits. Immerse yourself in highly detailed environments and complex logic systems.
+              From navigating satellites in the open cosmos of space to spinning decks above a theatre production, your abilities will be put to the test as you battle through every cinematic mission in this first-person puzzle game.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-10">

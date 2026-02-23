@@ -127,7 +127,7 @@ export default async function Page() {
               </div>
               <div className="absolute bottom-10 left-0 w-full p-8 sm:p-16 z-10">
                 <h1 className="text-6xl sm:text-9xl font-black text-white mb-4 tracking-tighter drop-shadow-2xl">FIX PC</h1>
-                <p className="text-xl sm:text-2xl text-white/80 font-medium border-l-8 border-[#E46362] pl-6 max-w-lg">A High-Stakes VR Hardware Puzzle Experience.</p>
+                <p className="text-xl sm:text-2xl text-white/80 font-medium border-l-8 border-[#E46362] pl-6 max-w-lg">This is the big one! Immersive puzzle game.</p>
               </div>
             </section>
 

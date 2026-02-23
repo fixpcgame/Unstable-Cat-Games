@@ -50,7 +50,7 @@ export default function AboutMe() {
             <Link href="/#pcgames" className="group relative p-8 rounded-[2rem] bg-white border-4 border-white hover:border-[#8B5CF6] transition-all duration-500 overflow-hidden shadow-xl hover:shadow-[0_20px_40px_rgba(139,92,246,0.2)] hover:-translate-y-2 z-10">
               <div className="relative z-10 flex flex-col items-center transform group-hover:scale-110 transition-transform duration-500">
                 <span className="text-6xl font-black text-[#8B5CF6] mb-3">
-                  2
+                  3
                 </span>
                 <h3 className="text-lg font-bold text-gray-500 uppercase tracking-widest group-hover:text-gray-900 transition-colors duration-300">PC Games</h3>
               </div>

@@ -181,7 +181,7 @@ export default function RightThatsIt({ imageUrls }: RightThatsItProps) {
             <h2 className="text-5xl sm:text-6xl font-black leading-tight mb-6 tracking-tight text-gray-900">
               Master the <br />
               <span className="bg-gradient-to-r from-[#E46362] to-[#F9C462] text-transparent bg-clip-text">
-                Platform
+                Platformer
               </span>
             </h2>
             
