@@ -4,11 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import BundleGallery from './bundlegallery';
-
 interface BundleProps {
   bundleImages: string[][];
 }
-
 const Bundle = ({ bundleImages }: BundleProps) => {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const [animatingIndices, setAnimatingIndices] = useState<number[]>([]);
@@ -16,9 +14,10 @@ const Bundle = ({ bundleImages }: BundleProps) => {
   const [isTilted, setIsTilted] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [isMobileActive, setIsMobileActive] = useState(false);
+  const [gapClass, setGapClass] = useState('gap-3');
   const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
   const galleryData = [
     { folder: 'Rocket Fuel', images: bundleImages[3], link: '/#rocketfuel-section' },
     { folder: 'Elasticity', images: bundleImages[2], link: '/#elasticity-section' },
@@ -26,7 +25,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     { folder: 'Link', images: bundleImages[4], link: '/#link-section' },
     { folder: 'Spin Tycoon', images: bundleImages[0], link: '/#spintycoon-section' },
   ];
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -37,7 +35,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
   useEffect(() => {
     if (!isInView) return;
     let timeoutId: NodeJS.Timeout;
@@ -54,7 +51,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     timeoutId = setTimeout(triggerTease, 400);
     return () => clearTimeout(timeoutId);
   }, [isInView]);
-
   useEffect(() => {
     if (activeGalleryIndex !== null) return;
     const timer = setTimeout(() => {
@@ -64,17 +60,33 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     }, 1200);
     return () => clearTimeout(timer);
   }, [activeGalleryIndex, galleryData.length]);
-
+  useEffect(() => {
+    const checkGaps = () => {
+      if (typeof window === 'undefined' || window.innerWidth >= 640 || !gridRef.current) return;
+      const children = Array.from(gridRef.current.children) as HTMLElement[];
+      let needsMoreSpace = false;
+      for (let i = 0; i < children.length - 1; i++) {
+        const rect1 = children[i].getBoundingClientRect();
+        const rect2 = children[i + 1].getBoundingClientRect();
+        if (rect2.top - rect1.bottom < 12) {
+          needsMoreSpace = true;
+          break;
+        }
+      }
+      setGapClass(needsMoreSpace ? 'gap-6' : 'gap-3');
+    };
+    checkGaps();
+    window.addEventListener('resize', checkGaps);
+    return () => window.removeEventListener('resize', checkGaps);
+  }, []);
   const handleMouseEnter = (index: number) => {
     setActiveGalleryIndex(index);
     setAnimatingIndices(prev => Array.from(new Set([...prev, index])));
   };
-
   const handleAnimationComplete = (index: number) => {
     setAnimatingIndices(prev => prev.filter(i => i !== index));
     setActiveGalleryIndex(prev => (prev === index ? null : prev));
   };
-
   const handleMobileClick = (e: React.MouseEvent) => {
     if (typeof window !== 'undefined' && window.innerWidth < 640) {
       if (!isMobileActive) {
@@ -85,7 +97,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
       }
     }
   };
-
   const galleryLayout = [
     'sm:col-start-3 sm:row-start-1',
     'sm:col-start-3 sm:row-start-2',
@@ -93,7 +104,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     'sm:col-start-2 sm:row-start-3',
     'sm:col-start-3 sm:row-start-3',
   ];
-
   return (
     <section
       ref={sectionRef}
@@ -110,8 +120,7 @@ const Bundle = ({ bundleImages }: BundleProps) => {
         <p className="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed mb-12 sm:mb-16 border-l-4 border-[#F9C462] pl-6 max-w-4xl">
           Elastic chaos, cosmic nonsense and calm, curious puzzles - (an unstable cat in full experimental play! Pack includes: Rocket Fuel, Elasticity, link, feed and spin tycoon)
         </p>
-
-        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3 sm:grid-rows-3 sm:h-[70vh] sm:max-h-[800px]">
+        <div ref={gridRef} className={`grid grid-cols-1 ${gapClass} sm:gap-4 sm:grid-cols-3 sm:grid-rows-3 sm:h-[70vh] sm:max-h-[800px]`}>
           <div className="relative col-span-1 sm:col-start-1 sm:row-start-1 sm:col-span-2 sm:row-span-2 group cursor-pointer">
             <div className="absolute inset-0 z-0 pointer-events-none">
               <div className={`absolute top-2 left-12 w-28 h-28 sm:w-36 sm:h-36 transition-all duration-500 ease-out origin-bottom ${activeMole === 0 && isTilted ? '-translate-y-24 rotate-12 scale-100 opacity-100' : 'translate-y-12 rotate-0 scale-75 opacity-0'}`}>
@@ -124,7 +133,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
                 <Image src="/Assets/cat.png" alt="Peeking Cat" fill className="object-contain drop-shadow-md" />
               </div>
             </div>
-
             <Link href="/#mobilegames" onClick={handleMobileClick} className={`block relative w-full h-[60vw] sm:h-full overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 border border-black/10 z-10 bg-gradient-to-br from-gray-50 to-gray-200 origin-bottom-left group-hover:shadow-[0_20px_50px_rgba(228,99,98,0.25)] ${isTilted ? '-rotate-[4deg]' : ''}`}>
               <Image src="/Assets/bundle.png" alt="The Unstable Cat Bundle" fill className={`object-cover transition-opacity duration-700 ease-in-out ${(isMobileActive ? 'opacity-0' : 'opacity-100')} sm:group-hover:opacity-0`} priority />
               <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 text-center transition-all duration-500 ${(isMobileActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')} sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0`}>
@@ -142,7 +150,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
               </div>
             </Link>
           </div>
-
           {galleryData.map((item, index) => {
             const isCurrentlyAnimating = animatingIndices.includes(index);
             return (
@@ -157,7 +164,6 @@ const Bundle = ({ bundleImages }: BundleProps) => {
           })}
         </div>
       </div>
-
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20 rotate-180">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[120px] fill-[#0e172a]">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0H0Z" />
@@ -166,5 +172,4 @@ const Bundle = ({ bundleImages }: BundleProps) => {
     </section>
   );
 };
-
 export default Bundle;

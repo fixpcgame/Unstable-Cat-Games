@@ -228,7 +228,7 @@ export default function ContactMe() {
                     value={formData.firstName}
                     onChange={handleChange}
                     className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.firstName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                    placeholder="Jesal"
+                    placeholder="Puss"
                   />
                   {errors.firstName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.firstName}</p>}
                 </div>
@@ -241,7 +241,7 @@ export default function ContactMe() {
                     value={formData.lastName}
                     onChange={handleChange}
                     className={`w-full px-5 py-4 bg-gray-50 border-2 ${errors.lastName ? 'border-red-400' : 'border-gray-100'} rounded-xl focus:outline-none focus:border-[#45a1d4] focus:bg-white transition-all font-medium text-gray-900`}
-                    placeholder="Vee"
+                    placeholder="inBoots"
                   />
                   {errors.lastName && <p className="text-red-500 text-xs font-bold animate-pulse">{errors.lastName}</p>}
                 </div>
@@ -270,7 +270,7 @@ export default function ContactMe() {
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#F9C462] focus:bg-white transition-all font-medium text-gray-900"
-                  placeholder="+44 7941 344450"
+                  placeholder="+44 7000 044400"
                 />
               </div>
 
