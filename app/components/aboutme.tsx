@@ -25,8 +25,8 @@ export default function AboutMe() {
         <div className="w-full max-w-2xl flex flex-col items-start text-left">
           
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-12 tracking-tight leading-tight text-[#0f172a]">
-            Discover my wild dream
-            <br /> to get the whole world playing.
+            Discover our dream to
+            <br/>get the whole world playing.
           </h2>
           
           <div 

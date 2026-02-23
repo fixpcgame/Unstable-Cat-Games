@@ -171,7 +171,7 @@ export default function ContactMe() {
             </span>
           </h2>
           <p className="text-xl text-gray-400 font-medium max-w-2xl mx-auto">
-            Got an idea, a question, or just want to chat? Drop me a message below.
+            Got an idea, a question or just want to chat? Drop us a message below.
           </p>
         </div>
 
