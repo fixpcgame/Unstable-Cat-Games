@@ -81,7 +81,7 @@ const Header = () => {
   const isFixPcActive = activeSection === 'fixpc-hero' || activeSection === 'fixpc-gallery';
   const isRightThatsItActive = activeSection === 'rightthatsit-hero' || activeSection === 'rightthatsit-gallery';
   const isMobileGamesActive = ['mobilegames', 'rocketfuel-section', 'elasticity-section', 'feed-section', 'link-section', 'spintycoon-section'].includes(activeSection);
-  const isHomeActive = activeSection === 'home' || (!isFixPcActive && !isRightThatsItActive && !isMobileGamesActive && !isContactPage);
+  const isHomeActive = !isContactPage && (activeSection === 'home' || (!isFixPcActive && !isRightThatsItActive && !isMobileGamesActive));
 
   return (
     <>
@@ -190,7 +190,8 @@ const Header = () => {
             const isThisLinkActive = link.id === 'contact' ? isContactPage :
                                      link.id === 'fixpc-hero' ? isFixPcActive : 
                                      link.id === 'rightthatsit-hero' ? isRightThatsItActive :
-                                     link.id === 'mobilegames' ? isMobileGamesActive : isHomeActive;
+                                     link.id === 'mobilegames' ? isMobileGamesActive : 
+                                     link.id === 'home' ? isHomeActive : false;
             
             return (
               <Link 
